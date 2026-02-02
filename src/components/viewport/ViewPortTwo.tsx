@@ -7,7 +7,7 @@ type Props = {
 
 const ViewPortTwo = ({children}: Props) => {
     return ( 
-        <div className="flex flex-col h-screen  overflow-hidden pt-10 ">
+        <div className="flex flex-col h-screen overflow-hidden pt-10 ">
 
             <div className=" lg:border-b border-border"></div>
            

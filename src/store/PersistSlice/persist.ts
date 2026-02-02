@@ -1,6 +1,6 @@
 import type { MediaItem } from "../../types/media";
 
-export type ProjectStatus = "draft" | "published" | "in-progress";
+export type MediaStatus = "inProgress" | "draft" | "published";
 
 type StoredProjects = {
   draft: MediaItem[];

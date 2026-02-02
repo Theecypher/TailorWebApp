@@ -1,6 +1,6 @@
 // store/mediaSlice.ts
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { MediaItem } from "../../types/media";
+import type { MediaContentProp, MediaItem } from "../../types/media";
 
 export type MediaStatus = "inProgress" | "draft" | "published";
 
@@ -64,6 +64,45 @@ const mediaSlice = createSlice({
     hydrateMedia: (state, action: PayloadAction<MediaState>) => {
       return action.payload;
     },
+
+    updateProject: (
+      state,
+      action: PayloadAction<{
+        status: MediaStatus;
+        id: string;
+        data: Partial<Pick<MediaItem, "name" | "item">>;
+      }>,
+    ) => {
+      const project = state[action.payload.status].find(
+        (p) => p.id === action.payload.id,
+      );
+      if (!project) return;
+
+      if (action.payload.data.name !== undefined) {
+        project.name = action.payload.data.name;
+      }
+
+      if (action.payload.data.item !== undefined) {
+        project.item = action.payload.data.item;
+      }
+    },
+
+    addProjectContent: (
+      state,
+      action: PayloadAction<{
+        status: MediaStatus;
+        id: string;
+        name: string
+        content: MediaContentProp[];
+      }>,
+    ) => {
+      const project = state[action.payload.status].find(
+        (p) => p.id === action.payload.id,
+      );
+      if (!project) return;
+
+      project.item.push(...action.payload.content);
+    },
   },
 });
 
@@ -74,6 +113,8 @@ export const {
   clearMediaStatus,
   hydrateMedia,
   moveAllMedia,
+  updateProject,
+  addProjectContent,
 } = mediaSlice.actions;
 
 export default mediaSlice.reducer;

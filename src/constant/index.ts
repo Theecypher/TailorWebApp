@@ -13,6 +13,7 @@ import textIcon from "../assets/png/textIcon.png";
 import addIcon from "../assets/png/addIcon.png";
 import picture from "../assets/png/picture.png";
 import hurray from "../assets/png/hurray.png";
+import avatar1 from "../assets/png/img.png";
 
 export const img = {
   arrowdown,
@@ -30,4 +31,5 @@ export const img = {
   video,
   picture,
   hurray,
+  avatar1,
 };

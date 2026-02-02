@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { lazy, Suspense } from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -9,6 +9,15 @@ import SocialViewPort from "../components/viewport/SocialViewPort";
 import UploadProject from "../pages/uploadProject";
 import { UploadProjectPage } from "../pages/uploadProject/UploadProjectPage";
 import UploadProjectLayout from "../components/viewport/UploadProjectLayout";
+
+// const BusinessTransaction = lazy(
+//   () =>
+//     import(
+//       '../pages/ManagementAndCompliance/BusinessTransaction/BusinessTransactionPageLayout'
+//     )
+// );
+
+const ProjectView = lazy(() => import("../pages/projectView"));
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,7 +39,8 @@ export const router = createBrowserRouter(
       <Route path="/" element={<ViewPortLayout />}>
         {/* <Route path="/uploadProject" element={<UploadProjectPage />} /> */}
         <Route path="/social" element={<SocialViewPort />} />
+        <Route path="/projectview" element={<ProjectView />} />
       </Route>
-    </Route>
-  )
+    </Route>,
+  ),
 );

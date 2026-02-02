@@ -9,8 +9,14 @@ import type { RootState } from "../../store";
 import QuestionModal from "../../components/modals/QuestionModal";
 import UploadProjectDisplay from "./UploadProjectDisplay";
 import { UploadActionButtons } from "./UploadActionsButtons";
-import { moveAllMedia } from "../../store/MediaSlice/MediaSlice";
+import {
+  addMedia,
+  addProjectContent,
+  moveAllMedia,
+} from "../../store/MediaSlice/MediaSlice";
 import SuccessModal from "../../components/modals/SuccessModal";
+import type { MediaContentProp, MediaItem } from "../../types/media";
+import { fileToBase64 } from "../../utils/FileToBase64";
 
 export const UploadProjectPage = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -19,6 +25,8 @@ export const UploadProjectPage = () => {
   const dispatch = useDispatch();
   const [isOpenSuccesModal, setIsOpenSuccessModal] = useState<boolean>(false);
   const [isPublishing, setIsPublishing] = useState<boolean>(false);
+  const [projectName, setProjectName] = useState<string>("");
+  const [projectId, setProjectId] = useState<string | null>(null);
 
   const mediaItems = useSelector((state: RootState) => state.media.inProgress);
 
@@ -68,11 +76,50 @@ export const UploadProjectPage = () => {
     description: "",
   };
 
+  const validationSchema = generateYupSchema(field);
+
   const handleSubmit = async (values: FormValues) => {
     console.log(values);
   };
 
-  const validationSchema = generateYupSchema(field);
+  const handleFiles = async (files: FileList | null) => {
+    if (!files) return;
+
+    let id = projectId;
+
+    if (!id) {
+      id = Date.now().toString();
+      setProjectId(id);
+
+      dispatch(
+        addMedia({
+          status: "inProgress",
+          item: {
+            id,
+            name: projectName || "Untitled Project",
+            item: [],
+          },
+        }),
+      );
+    }
+
+    const newContent: MediaContentProp[] = [];
+
+    for (const file of Array.from(files)) {
+      const base64 = await fileToBase64(file);
+      const type = file.type.startsWith("video") ? "video" : "image";
+
+      newContent.push({ type, content: base64 });
+      dispatch(
+        addProjectContent({
+          status: "inProgress",
+          id,
+          name,
+          content: newContent,
+        }),
+      );
+    }
+  };
 
   return (
     <div className="min-h-screen px-3 lg:px-0 pb-3 w-full bg-borderThree flex">
@@ -117,6 +164,8 @@ export const UploadProjectPage = () => {
                     type="text"
                     name="projectName"
                     placeholder="Name your Project"
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
                     className="border-b w-full p-2 border-borderButton bg-transparent outline-none"
                   />
 
@@ -143,7 +192,10 @@ export const UploadProjectPage = () => {
                       </div>
 
                       {toggleAddIcons && (
-                        <UploadProjectActions className="absolute flex-col top-[43%] right-[22px]" />
+                        <UploadProjectActions
+                          className="absolute flex-col top-[43%] right-[22px]"
+                          onHandleFile={handleFiles}
+                        />
                       )}
                     </>
                   )}
@@ -164,7 +216,10 @@ export const UploadProjectPage = () => {
 
         <div className="hidden lg:flex w-[20%] min-h-screen bg-white justify-center py-[40px]">
           <div className="sticky top-10 self-start flex flex-col items-center justify-center gap-[40px]">
-            <UploadProjectActions className="hidden lg:grid grid-cols-2 items-center gap-5" />
+            <UploadProjectActions
+              className="hidden lg:grid grid-cols-2 items-center gap-5"
+              onHandleFile={handleFiles}
+            />
 
             <UploadActionButtons
               onSaveDraft={handleSaveFileToDraft}

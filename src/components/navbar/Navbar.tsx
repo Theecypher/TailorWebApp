@@ -8,7 +8,7 @@ const Navbar = () => {
   const { toasts, addToast, removeToast } = useToast();
 
   return (
-    <div className="p-3 lg:px-[50px]">
+    <div className="p-3 lg:px-[50px] bg-white border-b border-borderThree">
       <div className="flex justify-between lg:justify-between items-center">
         <div className="flex items-center gap-3 lg:gap-8">
           <img
