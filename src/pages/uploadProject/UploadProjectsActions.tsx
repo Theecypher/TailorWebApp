@@ -3,8 +3,10 @@ import { img } from "../../constant";
 import UploadProjectModal from "../../components/modals/UploadProjectModal";
 
 
+
+
 interface UploadActionsProps {
-  onHandleFile?: (FileList: FileList | null) => void;
+  onHandleFile?: (files: FileList | null) => void;
   className?: string;
 }
 

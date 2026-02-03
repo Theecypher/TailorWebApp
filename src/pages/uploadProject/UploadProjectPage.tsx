@@ -5,18 +5,11 @@ import { generateYupSchema } from "../../utils/YupSchema";
 import { Form, Formik } from "formik";
 import UploadProjectActions from "./UploadProjectsActions";
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../store";
 import QuestionModal from "../../components/modals/QuestionModal";
-import UploadProjectDisplay from "./UploadProjectDisplay";
 import { UploadActionButtons } from "./UploadActionsButtons";
-import {
-  addMedia,
-  addProjectContent,
-  moveAllMedia,
-} from "../../store/MediaSlice/MediaSlice";
 import SuccessModal from "../../components/modals/SuccessModal";
-import type { MediaContentProp, MediaItem } from "../../types/media";
-import { fileToBase64 } from "../../utils/FileToBase64";
+import type { CurrentProject, ProjectItem } from "../../types/media";
+import { useProjectService } from "../../services/projectService";
 
 export const UploadProjectPage = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -26,27 +19,18 @@ export const UploadProjectPage = () => {
   const [isOpenSuccesModal, setIsOpenSuccessModal] = useState<boolean>(false);
   const [isPublishing, setIsPublishing] = useState<boolean>(false);
   const [projectName, setProjectName] = useState<string>("");
-  const [projectId, setProjectId] = useState<string | null>(null);
+  const [currentProject, setCurrentProject] = useState<CurrentProject>({
+    title: "",
+    items: [],
+  });
+  const { saveToDraft, publishProject, getDrafts } = useProjectService();
 
-  const mediaItems = useSelector((state: RootState) => state.media.inProgress);
-
-  const handleSaveFileToDraft = () => {
-    dispatch(moveAllMedia({ from: "inProgress", to: "draft" }));
-  };
-
-  const handleSaveProject = () => {
-    setIsPublishing(true);
-    dispatch(moveAllMedia({ from: "inProgress", to: "published" }));
-    setTimeout(() => {
-      setIsOpenSuccessModal(true);
-      setIsPublishing(false);
-    }, 1000);
-  };
+  const drafts = getDrafts();
 
   const handleAddClick = () => {
     setToggleAddIcons((prev) => !prev);
   };
-  const showActions = isMobile && mediaItems.length > 0;
+  const showActions = isMobile && currentProject.items.length > 0;
 
   useEffect(() => {
     const handleResize = () => {
@@ -82,43 +66,48 @@ export const UploadProjectPage = () => {
     console.log(values);
   };
 
-  const handleFiles = async (files: FileList | null) => {
-    if (!files) return;
+  const handleFiles = (selectedFiles: FileList | null) => {
+    console.log(true);
 
-    let id = projectId;
+    if (!selectedFiles?.length) return;
 
-    if (!id) {
-      id = Date.now().toString();
-      setProjectId(id);
+    const newItems: ProjectItem[] = Array.from(selectedFiles).map((file) => {
+      const previewUrl = URL.createObjectURL(file);
 
-      dispatch(
-        addMedia({
-          status: "inProgress",
-          item: {
-            id,
-            name: projectName || "Untitled Project",
-            item: [],
-          },
-        }),
-      );
+      return {
+        type: file.type.startsWith("image") ? "image" : "video",
+        content: previewUrl,
+        file,
+        name: file.name,
+        size: file.size,
+        mimeType: file.type,
+      };
+    });
+
+    setCurrentProject((prev) => ({
+      ...prev,
+      items: [...prev.items, ...newItems],
+    }));
+  };
+
+  const handleSaveToDraft = () => {
+    if (currentProject.items.length === 0) {
+      return;
     }
 
-    const newContent: MediaContentProp[] = [];
+    const cleanedItems: ProjectItem[] = currentProject.items.map((item) => ({
+      type: item.type,
+      content: item.content,
+    }));
 
-    for (const file of Array.from(files)) {
-      const base64 = await fileToBase64(file);
-      const type = file.type.startsWith("video") ? "video" : "image";
+    saveToDraft({
+      title: currentProject.title,
+      items: cleanedItems,
+    });
 
-      newContent.push({ type, content: base64 });
-      dispatch(
-        addProjectContent({
-          status: "inProgress",
-          id,
-          name,
-          content: newContent,
-        }),
-      );
-    }
+    console.log(drafts);
+
+    // setCurrentProject({ title: " ", items: [] });
   };
 
   return (
@@ -169,8 +158,12 @@ export const UploadProjectPage = () => {
                     className="border-b w-full p-2 border-borderButton bg-transparent outline-none"
                   />
 
-                  {mediaItems.length > 0 ? (
-                    <UploadProjectDisplay />
+                  {currentProject.items.length > 0 ? (
+                    currentProject.items.map((item, index) => (
+                      <div key={index}>
+                        <img src={item.content} alt="" />
+                      </div>
+                    ))
                   ) : (
                     <div className="border flex gap-2 items-center border-borderButton h-[500px] w-full justify-center">
                       <img className="w-10 h-10" src={img.html} alt="" />
@@ -207,9 +200,8 @@ export const UploadProjectPage = () => {
 
         {showActions && (
           <UploadActionButtons
-            onSaveDraft={handleSaveFileToDraft}
-            onContinue={handleSaveProject}
             isSubmitting={isPublishing}
+            onContinue={handleSaveToDraft}
             className="flex flex-row px-5"
           />
         )}
@@ -222,9 +214,8 @@ export const UploadProjectPage = () => {
             />
 
             <UploadActionButtons
-              onSaveDraft={handleSaveFileToDraft}
-              onContinue={handleSaveProject}
               isSubmitting={isPublishing}
+              onContinue={handleSaveToDraft}
             />
           </div>
         </div>

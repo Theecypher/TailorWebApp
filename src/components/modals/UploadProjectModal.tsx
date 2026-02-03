@@ -3,8 +3,6 @@ import { generateYupSchema } from "../../utils/YupSchema";
 import { Dialog, DialogContent } from "@mui/material";
 import DynamicForm from "../../shared/dynamicForm/DynamicForm";
 import { useDispatch } from "react-redux";
-import { addMedia } from "../../store/MediaSlice/MediaSlice";
-import type { MediaItem } from "../../types/media";
 
 const UploadModalFormField: FieldConfig[] = [
   {
@@ -38,13 +36,15 @@ const UploadProjectModal = ({
 UploadProjectModalProps) => {
   const dispatch = useDispatch();
   const handleSubmit = async (values: UploadFormProps) => {
-    const mediaItem: MediaItem = {
-      id: Date.now().toString(6),
-      type: "text",
-      content: values.projectDescription,
-    };
-    dispatch(addMedia({ status: "inProgress", item: mediaItem }));
-    onClose();
+    // const mediaItem: MediaItem = {
+    //   id: Date.now().toString(6),
+    //   type: "text",
+    //   content: values.projectDescription,
+    // };
+    // dispatch(addMedia({ status: "inProgress", item: mediaItem }));
+    // onClose();
+
+    console.log(values);
   };
 
   return (
