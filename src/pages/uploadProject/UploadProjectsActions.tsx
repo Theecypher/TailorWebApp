@@ -2,15 +2,17 @@ import { useState } from "react";
 import { img } from "../../constant";
 import UploadProjectModal from "../../components/modals/UploadProjectModal";
 
-
-
-
 interface UploadActionsProps {
   onHandleFile?: (files: FileList | null) => void;
   className?: string;
+  onAddText: (text: string) => void;
 }
 
-const UploadProjectActions = ({ className, onHandleFile }: UploadActionsProps) => {
+const UploadProjectActions = ({
+  className,
+  onHandleFile,
+  onAddText,
+}: UploadActionsProps) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
@@ -19,6 +21,7 @@ const UploadProjectActions = ({ className, onHandleFile }: UploadActionsProps) =
         <UploadProjectModal
           isOpen={isOpenModal}
           onClose={() => setIsOpenModal(false)}
+          onAddText={onAddText}
         />
       )}
 

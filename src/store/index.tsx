@@ -1,30 +1,32 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import projectsReducer from "./projectSlice";
 import sectionReducer from "./SectionStore/SectionSlice";
 
+const rootReducer = combineReducers({
+  section: sectionReducer,
+  projects: projectsReducer,
+});
+
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["projects"],
+  whitelist: ["projects"], // Only persist projects
 };
 
-const persistedReducer = persistReducer(persistConfig, projectsReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    section: sectionReducer,
-    projects: persistedReducer,
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // If you have non-serializable data like Files
+      serializableCheck: false,
     }),
 });
 
 export const persistor = persistStore(store);
 
-// Type exports for hooks
+// Types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

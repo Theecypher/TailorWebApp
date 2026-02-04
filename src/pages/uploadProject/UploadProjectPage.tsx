@@ -4,25 +4,25 @@ import { type FieldConfig } from "../../shared/dynamicForm/DynamicForm";
 import { generateYupSchema } from "../../utils/YupSchema";
 import { Form, Formik } from "formik";
 import UploadProjectActions from "./UploadProjectsActions";
-import { useDispatch, useSelector } from "react-redux";
 import QuestionModal from "../../components/modals/QuestionModal";
 import { UploadActionButtons } from "./UploadActionsButtons";
 import SuccessModal from "../../components/modals/SuccessModal";
 import type { CurrentProject, ProjectItem } from "../../types/media";
 import { useProjectService } from "../../services/projectService";
+import UploadProjectDisplay from "./UploadProjectDisplay";
+// import UploadDisplay from "./UploadProjectDisplay";
 
 export const UploadProjectPage = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [toggleAddIcons, setToggleAddIcons] = useState<boolean>(false);
   const [isOpenDraftModal, setIsOpenDraftModal] = useState<boolean>(false);
-  const dispatch = useDispatch();
   const [isOpenSuccesModal, setIsOpenSuccessModal] = useState<boolean>(false);
   const [isPublishing, setIsPublishing] = useState<boolean>(false);
-  const [projectName, setProjectName] = useState<string>("");
   const [currentProject, setCurrentProject] = useState<CurrentProject>({
     title: "",
     items: [],
   });
+  const [error, setIsError] = useState(false);
   const { saveToDraft, publishProject, getDrafts } = useProjectService();
 
   const drafts = getDrafts();
@@ -66,6 +66,13 @@ export const UploadProjectPage = () => {
     console.log(values);
   };
 
+  const handleTitleChange = (value: string) => {
+    setCurrentProject((prev) => ({
+      ...prev,
+      title: value,
+    }));
+  };
+
   const handleFiles = (selectedFiles: FileList | null) => {
     console.log(true);
 
@@ -90,11 +97,34 @@ export const UploadProjectPage = () => {
     }));
   };
 
-  const handleSaveToDraft = () => {
+  const handleText = (text: string) => {
+    console.log(text);
+
+    const newTextItem: ProjectItem = {
+      type: "text",
+      content: text,
+    };
+
+    console.log(newTextItem);
+
+    setCurrentProject((prev) => ({
+      ...prev,
+      items: [...prev.items, newTextItem],
+    }));
+  };
+
+  const handleDraftButton = () => {
     if (currentProject.items.length === 0) {
+      return;
+    } else if (currentProject.title.length === 0) {
+      setIsError(true);
       return;
     }
 
+    setIsOpenDraftModal(true);
+  };
+
+  const handleSaveToDraft = () => {
     const cleanedItems: ProjectItem[] = currentProject.items.map((item) => ({
       type: item.type,
       content: item.content,
@@ -105,9 +135,22 @@ export const UploadProjectPage = () => {
       items: cleanedItems,
     });
 
-    console.log(drafts);
+    setCurrentProject({ title: " ", items: [] });
+  };
 
-    // setCurrentProject({ title: " ", items: [] });
+  const handlePublishProject = () => {
+    const cleanedItems: ProjectItem[] = currentProject.items.map((item) => ({
+      type: item.type,
+      content: item.content,
+    }));
+
+    publishProject({
+      title: currentProject.title,
+      items: cleanedItems,
+    });
+
+    setCurrentProject({ title: "", items: [] });
+    setIsOpenSuccessModal(true);
   };
 
   return (
@@ -115,6 +158,7 @@ export const UploadProjectPage = () => {
       {isOpenDraftModal && (
         <QuestionModal
           isOpen={isOpenDraftModal}
+          onSubmit={handleSaveToDraft}
           onClose={() => setIsOpenDraftModal(false)}
         />
       )}
@@ -153,15 +197,15 @@ export const UploadProjectPage = () => {
                     type="text"
                     name="projectName"
                     placeholder="Name your Project"
-                    value={projectName}
-                    onChange={(e) => setProjectName(e.target.value)}
-                    className="border-b w-full p-2 border-borderButton bg-transparent outline-none"
+                    value={currentProject.title}
+                    onChange={(e) => handleTitleChange(e.target.value)}
+                    className={`border-b w-full p-2 bg- border-borderButton bg-transparent outline-none ${error ? "border-red-700" : "border-borderButton"}`}
                   />
 
                   {currentProject.items.length > 0 ? (
                     currentProject.items.map((item, index) => (
                       <div key={index}>
-                        <img src={item.content} alt="" />
+                        <UploadProjectDisplay item={item} />
                       </div>
                     ))
                   ) : (
@@ -188,6 +232,7 @@ export const UploadProjectPage = () => {
                         <UploadProjectActions
                           className="absolute flex-col top-[43%] right-[22px]"
                           onHandleFile={handleFiles}
+                          onAddText={handleText}
                         />
                       )}
                     </>
@@ -201,7 +246,8 @@ export const UploadProjectPage = () => {
         {showActions && (
           <UploadActionButtons
             isSubmitting={isPublishing}
-            onContinue={handleSaveToDraft}
+            onContinue={handlePublishProject}
+            onSaveDraft={handleDraftButton}
             className="flex flex-row px-5"
           />
         )}
@@ -211,11 +257,13 @@ export const UploadProjectPage = () => {
             <UploadProjectActions
               className="hidden lg:grid grid-cols-2 items-center gap-5"
               onHandleFile={handleFiles}
+              onAddText={handleText}
             />
 
             <UploadActionButtons
               isSubmitting={isPublishing}
-              onContinue={handleSaveToDraft}
+              onContinue={handlePublishProject}
+              onSaveDraft={handleDraftButton}
             />
           </div>
         </div>
