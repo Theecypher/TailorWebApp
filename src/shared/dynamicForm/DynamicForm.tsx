@@ -6,6 +6,7 @@ import type { FieldConfig } from "../types";
 import Input from "../input/inputs";
 import { img } from "../../constant";
 import type { ReactNode } from "react";
+import SingleSelect from "../input/SIngleSelect";
 
 interface FormGeneratorProps<T> {
   fields: FieldConfig[];
@@ -23,6 +24,9 @@ interface FormGeneratorProps<T> {
   noInputBorder?: boolean;
   onAddClick?: () => void | Promise<void>;
   children?: ReactNode;
+
+  buttonWrapperClassName?: string;
+  topBorderClassName?: string;
 }
 
 const DynamicForm = <T extends Record<string, any>>({
@@ -35,10 +39,10 @@ const DynamicForm = <T extends Record<string, any>>({
   submitText,
   layoutClassname,
   buttonClassName,
-  addIcon,
+  buttonWrapperClassName,
+  topBorderClassName,
   formLayoutClassname,
   noInputBorder,
-  onAddClick,
   children,
 }: FormGeneratorProps<T>) => {
   return (
@@ -55,6 +59,15 @@ const DynamicForm = <T extends Record<string, any>>({
                 key={field.name}
                 className={field.fullWidth ? "col-span-1 md:col-span-2" : ""}
               >
+                {field.type === "select" && (
+                  <SingleSelect
+                    name={field.name}
+                    label={field.label}
+                    options={field.options || []}
+                    disabled={field.disabled}
+                  />
+                )}
+
                 {field.type === "checkbox" && (
                   <div style={{ marginTop: "10px", marginBottom: "4px" }}>
                     <Field name={field.name}>
@@ -111,31 +124,29 @@ const DynamicForm = <T extends Record<string, any>>({
             ))}
           </div>
 
-          {addIcon && (
-            <div className="justify-self-end w-10 h-10">
-              <img onClick={onAddClick} src={img.addIcon} alt="" />
-            </div>
-          )}
-
           {children}
 
-          {!hideSubmit && (
-            <div className="flex justify-center">
-              <ShareWorkButton
-                type="submit"
-                disabled={
-                  isSubmitting ||
-                  Object.values(values).every(
-                    (value) => value === "" || value == null
-                  )
-                }
-                loading={isSubmitting}
-                className={`hover:bg-hoverBtn px-6 py-2 rounded-14 transition w-full ${buttonClassName}`}
+          <div className={`${topBorderClassName}`}>
+            {!hideSubmit && (
+              <div
+                className={`flex justify-center  self-end ${buttonWrapperClassName}`}
               >
-                {submitText}
-              </ShareWorkButton>
-            </div>
-          )}
+                <ShareWorkButton
+                  type="submit"
+                  disabled={
+                    isSubmitting ||
+                    Object.values(values).every(
+                      (value) => value === "" || value == null,
+                    )
+                  }
+                  loading={isSubmitting}
+                  className={`hover:bg-hoverBtn px-6 py-2 rounded-14 transition w-full ${buttonClassName}`}
+                >
+                  {submitText}
+                </ShareWorkButton>
+              </div>
+            )}
+          </div>
         </Form>
       )}
     </Formik>

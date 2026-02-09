@@ -17,7 +17,12 @@ export default {
         borderButton: "#8AC5C5",
         grey100: "#BCBCBC",
         primaryGreenOne: "#8AC5C5",
-        grey200: "#535353"
+        grey200: "#535353",
+        primary50: "#EBEBEE",
+        primary100: "#CECDD5",
+        primary200: "#9C9BAA",
+        primary300: "#6B6A80",
+        primary_active: "#004646",
       },
       borderRadius: {
         sm: "6px",
