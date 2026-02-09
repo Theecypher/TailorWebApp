@@ -24,7 +24,6 @@ interface FormGeneratorProps<T> {
   noInputBorder?: boolean;
   onAddClick?: () => void | Promise<void>;
   children?: ReactNode;
-
   buttonWrapperClassName?: string;
   topBorderClassName?: string;
 }

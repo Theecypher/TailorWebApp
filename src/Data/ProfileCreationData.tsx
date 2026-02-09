@@ -10,7 +10,7 @@ export const ProfileCreationData = [
     label: "Personal Information",
     img: userlogo,
   },
-  { name: "About Me", value: "", label: "About Me", img: help_circle },
+  { name: "About Me", value: "aboutMe", label: "About Me", img: help_circle },
   {
     name: "Social links",
     value: "socialLinks",
