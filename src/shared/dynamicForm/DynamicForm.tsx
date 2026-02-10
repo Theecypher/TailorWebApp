@@ -4,7 +4,6 @@ export type { FieldConfig } from "../types";
 import ShareWorkButton from "../button/ShareWorkBtn";
 import type { FieldConfig } from "../types";
 import Input from "../input/inputs";
-import { img } from "../../constant";
 import type { ReactNode } from "react";
 import SingleSelect from "../input/SIngleSelect";
 

@@ -6,7 +6,7 @@ import help_circle from "../assets/svg/fi_help-circle.svg";
 export const ProfileCreationData = [
   {
     name: "personalInformation",
-    value: "personalInfo",
+    value: "personalInformation",
     label: "Personal Information",
     img: userlogo,
   },

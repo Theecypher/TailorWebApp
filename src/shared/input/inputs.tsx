@@ -106,7 +106,7 @@ const Input: React.FC<InputProps> = ({
           value={value !== undefined ? value : field.value}
           maxLength={maxLength}
           className={`
-            block w-full px-2 h-[40px] text-14 ${borderless ? "" : ""}
+            block w-full px-2 h-[40px] text-14 lg:h-12 rounded-12 ${borderless ? "" : ""}
               ${buttomBorder ? "border-b border-b-borderButton shadow-none" : "border shadow-sm"}
              font-light
             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
