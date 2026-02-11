@@ -1,20 +1,30 @@
 import { useEffect, useMemo, useState } from "react";
-import { type FieldConfig } from "../../../shared/dynamicForm/DynamicForm";
 import { generateYupSchema } from "../../../utils/YupSchema";
 import ProfileCreationForm from "../../../shared/dynamicForm/ProfileCreationForm";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../store";
-import { PersonalInformationFields } from "./ProfileCreationField";
+import {
+  AboutMeFields,
+  PersonalInformationFields,
+  socialLinksFields,
+} from "./ProfileCreationField";
 
 const ProfileCreationQuestion = () => {
   type PersonalInformationProps = {
-    name: string;
-    location: string;
-    tailoringSKills: string;
-    yearsOfExperience: string;
+    name?: string;
+    location?: string;
+    tailoringSKills?: string;
+    yearsOfExperience?: string;
+    businessName?: string;
+    descriptionAboutMe?: string; 
+    tiktok?: string,
+    instagram?: string,
+    x?: string,
+    facebook?: string,
+
   };
 
-  const initialValues = useMemo<PersonalInformationProps>(
+  const PersonalInfoinitialValues = useMemo<PersonalInformationProps>(
     () => ({
       name: "",
       location: "",
@@ -23,21 +33,34 @@ const ProfileCreationQuestion = () => {
     }),
     [],
   );
-  const validationSchema = useMemo(
+  const aboutMeInitialValues = {
+    businessName: "",
+    descriptionAboutMe: "",
+  };
+
+  const socialLinksInitialValues = {
+    tiktok: "",
+    instagram: "",
+    x: "",
+    facebook: "",
+  };
+  const personalvalidationSchema = useMemo(
     () => generateYupSchema(PersonalInformationFields),
     [PersonalInformationFields],
   );
-  const handleSubmit = (values: typeof initialValues) => {
+
+  const aboutMeValidationSchema = useMemo(
+    () => generateYupSchema(AboutMeFields),
+    [AboutMeFields],
+  );
+  const socialLinksValidationSchema = useMemo(
+    () => generateYupSchema(socialLinksFields),
+    [socialLinksFields],
+  );
+
+  const handleSubmit = (values: typeof PersonalInfoinitialValues) => {
     console.log(values);
   };
-
-  interface ProfileCreationStepsProp {
-    personalInfo: string;
-    aboutMe: string;
-    socialMedia: string;
-    experience: string;
-  }
-
   const profileStep = useSelector(
     (state: RootState) => state.profile.ProfileStep,
   );
@@ -49,8 +72,8 @@ const ProfileCreationQuestion = () => {
       {profileStep === "personalInformation" && (
         <ProfileCreationForm
           fields={PersonalInformationFields}
-          initialValues={initialValues}
-          validationSchema={validationSchema}
+          initialValues={PersonalInfoinitialValues}
+          validationSchema={personalvalidationSchema}
           onSubmit={handleSubmit}
           submitText="Continue"
           formLayoutClassname="px-5"
@@ -61,9 +84,23 @@ const ProfileCreationQuestion = () => {
       )}
       {profileStep === "aboutMe" && (
         <ProfileCreationForm
-          fields={PersonalInformationFields}
-          initialValues={initialValues}
-          validationSchema={validationSchema}
+          fields={AboutMeFields}
+          initialValues={aboutMeInitialValues}
+          validationSchema={aboutMeValidationSchema}
+          onSubmit={handleSubmit}
+          submitText="Continue"
+          formLayoutClassname="px-5"
+          buttonClassName="text-white"
+          title="About Me"
+          subTitle="Share a brief overview of your passion, experience, and what drives your creativity. "
+        />
+      )}
+
+      {profileStep === "socialLinks" && (
+        <ProfileCreationForm
+          fields={socialLinksFields}
+          initialValues={socialLinksInitialValues}
+          validationSchema={socialLinksValidationSchema}
           onSubmit={handleSubmit}
           submitText="Continue"
           formLayoutClassname="px-5"
@@ -72,6 +109,19 @@ const ProfileCreationQuestion = () => {
           subTitle="Provide your personal details to help build a complete profile."
         />
       )}
+      {/* {profileStep === "workExperience" && (
+        <ProfileCreationForm
+          fields={socialLinksFields}
+          initialValues={socialLinksInitialValues}
+          validationSchema={socialLinksValidationSchema}
+          onSubmit={handleSubmit}
+          submitText="Continue"
+          formLayoutClassname="px-5"
+          buttonClassName="text-white"
+          title="Previous Work "
+          subTitle="Adding your work experience helps potential clients and collaborators understand your background and the unique skills you bring to every project"
+        />
+      )} */}
     </>
   );
 };

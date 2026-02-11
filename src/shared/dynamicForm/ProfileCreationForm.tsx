@@ -11,6 +11,7 @@ import IsMobile from "../../utils/lib/IsMobile";
 import { useProjectService } from "../../services/projectService";
 import { useDispatch } from "react-redux";
 import { setValue } from "../../store/profileSlice";
+import { img } from "../../constant";
 
 interface FormGeneratorProps<T> {
   fields: FieldConfig[];
@@ -32,6 +33,7 @@ interface FormGeneratorProps<T> {
   children?: ReactNode;
   buttonWrapperClassName?: string;
   topBorderClassName?: string;
+  logo?: string;
 }
 
 const ProfileCreationForm = <T extends Record<string, any>>({
@@ -47,6 +49,7 @@ const ProfileCreationForm = <T extends Record<string, any>>({
   title = "Personal Information",
   subTitle = "Provide your personal details to help build a complete profile.",
   formLayoutClassname,
+  logo,
 }: FormGeneratorProps<T>) => {
   const [isMobile] = IsMobile();
   const [selectedTab, setSelectedType] = useState("");
@@ -79,7 +82,7 @@ const ProfileCreationForm = <T extends Record<string, any>>({
                   <div
                     key={link.value}
                     onClick={() => handleProfileStepClick(link.value)}
-                    className={`flex gap-2 items-center  transition-all duration-200 p-3 text-center ${isActive ? "bg-primary_active rounded-10 font-bold text-white" : "text-black"} `}
+                    className={`flex gap-2 items-center cursor-pointer  transition-all duration-200 p-3 text-center ${isActive ? "bg-primary_active rounded-10 font-bold text-white" : "text-black"} `}
                   >
                     <img className="" src={link.img} alt="" />
                     <h2>{link.label}</h2>
@@ -144,13 +147,20 @@ const ProfileCreationForm = <T extends Record<string, any>>({
                         "date",
                         "tel",
                       ].includes(field.type) && (
-                        <Input
-                          name={field.name}
-                          type={field.type as any}
-                          label={field.label}
-                          placeholder={field.placeholder}
-                          disabled={field.disabled}
-                        />
+                        <div>
+                          {logo && (
+                            <div className="flex gap-2">
+                              <img src={field.logo} alt="" />
+                            </div>
+                          )}
+                          <Input
+                            name={field.name}
+                            type={field.type as any}
+                            label={field.label}
+                            placeholder={field.placeholder}
+                            disabled={field.disabled}
+                          />
+                        </div>
                       )}
                     </div>
                   ))}

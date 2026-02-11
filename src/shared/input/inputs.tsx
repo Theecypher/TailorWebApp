@@ -20,6 +20,7 @@ const Input: React.FC<InputProps> = ({
   borderless = false,
   rows,
   buttomBorder = false,
+
   //   hintText = false,
 }) => {
   const [field, meta, helpers] = useField(name);
@@ -96,29 +97,31 @@ const Input: React.FC<InputProps> = ({
             `.trim()}
         />
       ) : (
-        <input
-          id={name}
-          type={inputType}
-          {...field}
-          placeholder={placeholder}
-          disabled={disabled}
-          autoComplete={autoComplete}
-          value={value !== undefined ? value : field.value}
-          maxLength={maxLength}
-          className={`
-            block w-full px-2 h-[40px] text-14 lg:h-12 rounded-12 ${borderless ? "" : ""}
-              ${buttomBorder ? "border-b border-b-borderButton shadow-none" : "border shadow-sm"}
-             font-light
-            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed
-            ${
-              hasError
-                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                : "border-gray-300"
-            }
-            ${className}
-          `.trim()}
-        />
+   
+          <input
+            id={name}
+            type={inputType}
+            {...field}
+            placeholder={placeholder}
+            disabled={disabled}
+            autoComplete={autoComplete}
+            value={value !== undefined ? value : field.value}
+            maxLength={maxLength}
+            className={`
+              block w-full px-2 h-[40px] text-14 lg:h-12 rounded-12 ${borderless ? "" : ""}
+                ${buttomBorder ? "border-b border-b-borderButton shadow-none" : "border shadow-sm"}
+               font-light
+              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+              disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed
+              ${
+                hasError
+                  ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300"
+              }
+              ${className}
+            `.trim()}
+          />
+      
       )}
 
       {maxLength && showCharacterCount && !hasError && (

@@ -24,6 +24,7 @@ export interface InputProps {
   buttomBorder?: boolean;
   rows?: number;
   hintText?: boolean;
+  logo?: string;
 }
 
 export type FieldConfig = {
@@ -59,5 +60,6 @@ export type FieldConfig = {
   hintText?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
+  logo?: string;
   onChange?: (value: any, formValues?: any) => void;
 };
