@@ -77,3 +77,42 @@ export const socialLinksFields: FieldConfig[] = [
     type: "text",
   },
 ];
+
+export const workExperienceFields: FieldConfig[] = [
+  {
+    name: "role",
+    label: "",
+    placeholder: "",
+    type: "text",
+  },
+  {
+    name: "employmentType",
+    label: "",
+    placeholder: "",
+    type: "select",
+  },
+  {
+    name: "organisation",
+    label: "",
+    placeholder: "",
+    type: "text",
+  },
+  {
+    name: "startdate",
+    label: "",
+    placeholder: "",
+    type: "text",
+  },
+  {
+    name: "throughDate",
+    label: "",
+    placeholder: "",
+    type: "text",
+  },
+  {
+    name: "description",
+    label: "",
+    placeholder: "",
+    type: "textarea",
+  },
+];
