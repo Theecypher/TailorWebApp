@@ -6,16 +6,13 @@ import App from "./App.tsx";
 import { store } from "./store/index.tsx";
 import { ThemeProvider } from "./contexts/ThemeContext/index.tsx";
 import { ToastProvider } from "./contexts/ToastContext/index.tsx";
-import StorePersistence from "./store/StorePersistence.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
       <ThemeProvider>
         <ToastProvider>
-          <StorePersistence>
-            <App />
-          </StorePersistence>
+          <App />
         </ToastProvider>
       </ThemeProvider>
     </Provider>

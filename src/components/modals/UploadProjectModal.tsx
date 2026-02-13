@@ -2,9 +2,6 @@ import type { FieldConfig } from "../../shared/types";
 import { generateYupSchema } from "../../utils/YupSchema";
 import { Dialog, DialogContent } from "@mui/material";
 import DynamicForm from "../../shared/dynamicForm/DynamicForm";
-import { useDispatch } from "react-redux";
-import { addMedia } from "../../store/MediaSlice/MediaSlice";
-import type { MediaItem } from "../../types/media";
 
 const UploadModalFormField: FieldConfig[] = [
   {
@@ -15,7 +12,7 @@ const UploadModalFormField: FieldConfig[] = [
   },
 ];
 
-type UploadFormProps = {
+type UploadForm = {
   projectDescription: string;
 };
 
@@ -28,22 +25,20 @@ const validationSchema = generateYupSchema(UploadModalFormField);
 type UploadProjectModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit?: (data: UploadFormProps) => void;
+  onAddText?: (text: string) => void;
 };
 
 const UploadProjectModal = ({
   isOpen,
   onClose,
-}: // onSubmit,
-UploadProjectModalProps) => {
-  const dispatch = useDispatch();
-  const handleSubmit = async (values: UploadFormProps) => {
-    const mediaItem: MediaItem = {
-      id: Date.now().toString(6),
-      type: "text",
-      content: values.projectDescription,
-    };
-    dispatch(addMedia({ status: "inProgress", item: mediaItem }));
+  onAddText,
+}: UploadProjectModalProps) => {
+  const handleSubmit = async (values: UploadForm) => {
+    const text = values.projectDescription.trim();
+
+    if (text && onAddText) {
+      onAddText(text);
+    }
     onClose();
   };
 

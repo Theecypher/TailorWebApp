@@ -4,16 +4,17 @@ import ShareWorkButton from "../../shared/button/ShareWorkBtn";
 type QUestionModalProp = {
   isOpen: boolean;
   onClose?: () => void;
+  onSubmit?: () => void;
 };
 
-const QuestionModal = ({ isOpen, onClose }: QUestionModalProp) => {
+const QuestionModal = ({ isOpen, onClose, onSubmit }: QUestionModalProp) => {
   return (
     <Dialog
       open={isOpen}
       maxWidth="xs"
       style={{
         borderRadius: "20px",
-        marginTop: "50px"
+        marginTop: "50px",
       }}
       className="flex flex-col gap-2 rounded-12 py-10"
     >
@@ -27,7 +28,7 @@ const QuestionModal = ({ isOpen, onClose }: QUestionModalProp) => {
         </p>
 
         <div className="flex flex-col items-center justify-center gap-2">
-          <ShareWorkButton className="text-white w-[200px]">
+          <ShareWorkButton onClick={onSubmit} className="text-white w-[200px]">
             Save to draft
           </ShareWorkButton>
 

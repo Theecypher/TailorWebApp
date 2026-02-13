@@ -14,6 +14,11 @@ import addIcon from "../assets/png/addIcon.png";
 import picture from "../assets/png/picture.png";
 import hurray from "../assets/png/hurray.png";
 import avatar1 from "../assets/png/img.png";
+import tailora from "../assets/png/tailora.png";
+import userlogo from "../assets/svg/User.svg";
+import award from "../assets/svg/fi_award.svg";
+import globe from "../assets/svg/fi_globe.svg";
+import help_circle from "../assets/svg/fi_help-circle.svg";
 
 export const img = {
   arrowdown,
@@ -32,4 +37,10 @@ export const img = {
   picture,
   hurray,
   avatar1,
+  tailora,
+  userlogo,
+  award,
+  globe,
+  help_circle,
 };
+

@@ -22,3 +22,9 @@ export type ProfileItem = {
   shower?: boolean;
   hasNestedRoutes?: boolean;
 };
+
+export type ProfileCreationList =
+  | "personalInformation"
+  | "aboutMe"
+  | "socialLinks"
+  | "workExperience";

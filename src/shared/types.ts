@@ -24,23 +24,24 @@ export interface InputProps {
   buttomBorder?: boolean;
   rows?: number;
   hintText?: boolean;
+  logo?: string;
 }
 
 export type FieldConfig = {
   name: string;
   label?: string;
   type:
-    | 'text'
-    | 'email'
-    | 'password'
-    | 'number'
-    | 'date'
-    | 'checkbox'
-    | 'boolean'
-    // | 'select'
+    | "text"
+    | "email"
+    | "password"
+    | "number"
+    | "date"
+    | "checkbox"
+    | "boolean"
+    | "select"
     // | 'multiselect'
-    | 'textarea'
-    |  'tel'
+    | "textarea"
+    | "tel";
 
   required?: boolean;
   row?: number;
@@ -54,10 +55,11 @@ export type FieldConfig = {
     message?: string;
   };
   matchesField?: string;
-  options?: { label: string; value: string }[]; 
+  options?: { label: string; value: string }[];
   placeholder?: string;
-  hintText?: boolean
-  disabled?:boolean
+  hintText?: boolean;
+  disabled?: boolean;
   fullWidth?: boolean;
-  onChange?: (value: any, formValues?: any) => void; 
+  logo?: string;
+  onChange?: (value: any, formValues?: any) => void;
 };
