@@ -8,15 +8,14 @@ import { useEffect, useState, type ReactNode } from "react";
 import SingleSelect from "../input/SIngleSelect";
 import { ProfileCreationData } from "../../Data/ProfileCreationData";
 import IsMobile from "../../utils/lib/IsMobile";
-import { useProjectService } from "../../services/projectService";
 import { useDispatch } from "react-redux";
 import { setValue } from "../../store/profileSlice";
 import { img } from "../../constant";
 
 interface FormGeneratorProps<T> {
   fields: FieldConfig[];
-  title: string;
-  subTitle: string;
+  title?: string;
+  subTitle?: string;
   initialValues: T;
   validationSchema?: Yup.ObjectSchema<any>;
   onSubmit: (values: T) => void | Promise<void>;
@@ -34,6 +33,7 @@ interface FormGeneratorProps<T> {
   buttonWrapperClassName?: string;
   topBorderClassName?: string;
   logo?: string;
+  handleAddClick?: () => void;
 }
 
 const ProfileCreationForm = <T extends Record<string, any>>({
@@ -50,6 +50,7 @@ const ProfileCreationForm = <T extends Record<string, any>>({
   subTitle = "Provide your personal details to help build a complete profile.",
   formLayoutClassname,
   logo,
+  handleAddClick,
 }: FormGeneratorProps<T>) => {
   const [isMobile] = IsMobile();
   const [selectedTab, setSelectedType] = useState("");
@@ -164,6 +165,10 @@ const ProfileCreationForm = <T extends Record<string, any>>({
                       )}
                     </div>
                   ))}
+                </div>
+
+                <div className="justify-self-end w-10 h-10 fixed z-50 top-[90%] right-[22px] lg:hidden">
+                  <img onClick={handleAddClick} src={img.addIcon} alt="" />
                 </div>
 
                 <div

@@ -7,6 +7,10 @@ type ProfileConfig = {
   ProfileStep: ProfileCreationList;
 };
 
+
+
+
+
 const initialState: ProfileConfig = {
   ProfileStep: "personalInformation",
 };

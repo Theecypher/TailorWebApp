@@ -15,20 +15,20 @@ type PersonalInformationProps = {
   location?: string;
   tailoringSKills?: string;
   yearsOfExperience?: string;
+  submitText: string;
   businessName?: string;
   descriptionAboutMe?: string;
   tiktok?: string;
   instagram?: string;
   x?: string;
   facebook?: string;
-
 };
 const profileSteps = {
   personalInformation: {
     title: "Personal Information",
-    subtitle:
-      "Provide your personal details to help build a complete profile.",
+    subtitle: "Provide your personal details to help build a complete profile.",
     fields: PersonalInformationFields,
+    submitText: "Continue",
     initialValues: {
       name: "",
       location: "",
@@ -42,6 +42,7 @@ const profileSteps = {
     subtitle:
       "Share a brief overview of your passion, experience, and what drives your creativity.",
     fields: AboutMeFields,
+    submitText: "Continue",
     initialValues: {
       businessName: "",
       descriptionAboutMe: "",
@@ -52,6 +53,7 @@ const profileSteps = {
     title: "Social Links",
     subtitle: "Connect your social media profiles",
     fields: socialLinksFields,
+    submitText: "Continue",
     initialValues: {
       tiktok: "",
       instagram: "",
@@ -60,59 +62,49 @@ const profileSteps = {
     },
   },
 
-  //  workExperience: {
-  //   title: "Previous Work Experience",
-  //   subtitle:
-  //     "Adding your work experience helps potential clients understand your background...",
-  //   fields: workExperienceFields,
-  //   initialValues: { ... },
-  // },
+  workExperience: {
+    title: "Previous Work Experience",
+    submitText: "Continue",
+    subtitle: "",
+    fields: workExperienceFields,
+    initialValues: {
+      workExperience: "",
+    },
+  },
 } as const;
 
 type StepKey = keyof typeof profileSteps;
 
 const ProfileCreationQuestion = () => {
-
   const profileStep = useSelector(
     (state: RootState) => state.profile.ProfileStep,
-  ) as StepKey | undefined;
+  ) as StepKey;
 
-  // Get current step config or fallback
-  const currentStep = profileStep && profileSteps[profileStep];
+  const currentStep = profileSteps[profileStep];
 
-  // Memoize validation schema per step
-  const validationSchema = useMemo(() => {
-    if (!currentStep) return null;
-    return generateYupSchema(currentStep.fields);
-  }, [currentStep]);
+  // const validationSchema = useMemo(() => {
+  //   if (!currentStep) return null;
+  //   return generateYupSchema(currentStep.fields);
+  // }, [currentStep]);
 
   const handleSubmit = (values: any) => {
     console.log("Submitted values:", values);
-    // Here you would usually:
-    // 1. Save to redux / context / api
-    // 2. Move to next step
-    // dispatch(nextProfileStep())
   };
 
-
-  const profileStep = useSelector(
-    (state: RootState) => state.profile.ProfileStep,
-  );
-
-  console.log(profileStep);
+  const validationSchema = generateYupSchema(currentStep.fields);
 
   return (
     <>
       <ProfileCreationForm
-        fields={PersonalInformationFields}
-        initialValues={}
-        validationSchema={personalvalidationSchema}
+        fields={currentStep.fields}
+        initialValues={currentStep?.initialValues}
+        validationSchema={validationSchema}
         onSubmit={handleSubmit}
-        submitText="Continue"
+        submitText={currentStep?.submitText}
         formLayoutClassname="px-5"
         buttonClassName="text-white"
-        title="Personal Information"
-        subTitle="Provide your personal details to help build a complete profile."
+        title={currentStep?.title}
+        subTitle={currentStep?.subtitle}
       />
     </>
   );
