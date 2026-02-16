@@ -16,6 +16,7 @@ interface FormGeneratorProps<T> {
   layoutClassname?: string;
   formLayoutClassname?: string;
   hideSubmit?: boolean;
+  cancelLink?: string;
   buttonClassName?: string;
   disabled?: boolean;
   submitText?: string;
@@ -34,6 +35,7 @@ const DynamicForm = <T extends Record<string, any>>({
   onSubmit,
   //   forgotPasswordLink = false,
   hideSubmit = false,
+  cancelLink = "Cancel",
   submitText,
   layoutClassname,
   buttonClassName,
@@ -124,7 +126,7 @@ const DynamicForm = <T extends Record<string, any>>({
 
           {children}
 
-          <div className={`${topBorderClassName}`}>
+          <div className={` ${topBorderClassName}`}>
             {!hideSubmit && (
               <div
                 className={`flex justify-center  self-end ${buttonWrapperClassName}`}
@@ -143,6 +145,10 @@ const DynamicForm = <T extends Record<string, any>>({
                   {submitText}
                 </ShareWorkButton>
               </div>
+            )}
+
+            {cancelLink && (
+              <p className="text-primary font-medium text-18">{cancelLink}</p>
             )}
           </div>
         </Form>
