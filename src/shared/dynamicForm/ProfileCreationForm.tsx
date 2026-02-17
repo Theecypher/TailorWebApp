@@ -1,4 +1,4 @@
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 export type { FieldConfig } from "../types";
 import ShareWorkButton from "../button/ShareWorkBtn";
@@ -66,8 +66,6 @@ const ProfileCreationForm = <T extends Record<string, any>>({
     (state: RootState) => state.profile.isAddingWorkExperience,
   );
 
-  console.log(profileStep);
-
   useEffect(() => {
     if (activeTab !== profileStep) {
       setActiveTab(profileStep);
@@ -122,7 +120,14 @@ const ProfileCreationForm = <T extends Record<string, any>>({
               initialValues={initialValues}
               enableReinitialize={true}
               validationSchema={validationSchema}
-              onSubmit={onSubmit}
+              // onSubmit={onSubmit}
+              onSubmit={async (values, actions) => {
+                try {
+                  await onSubmit(values);
+                } finally {
+                  actions.setSubmitting(false);
+                }
+              }}
             >
               {({ values, isSubmitting, isValid }) => (
                 <Form
@@ -195,13 +200,7 @@ const ProfileCreationForm = <T extends Record<string, any>>({
                       >
                         <ShareWorkButton
                           type="submit"
-                          // disabled={
-                          //   isSubmitting ||
-                          //   Object.values(values).every(
-                          //     (value) => value === "" || value == null,
-                          //   )
-                          // }
-                          disabled={isSubmitting || isValid}
+                          disabled={isSubmitting || !isValid}
                           loading={isSubmitting}
                           className={`hover:bg-hoverBtn px-6 py-3 rounded-14 transition w-full ${buttonClassName}`}
                         >

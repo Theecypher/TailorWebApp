@@ -8,21 +8,14 @@ import {
   socialLinksFields,
   workExperienceFields,
 } from "./ProfileCreationField";
-import {
-  nextStep,
-  setIsAddingWorkExperience,
-  updateStepData,
-} from "../../../store/profileSlice";
+
+
+import type { ProfileFormValues } from "../../../types/Profile";
 
 const ProfileCreationQuestion = () => {
-  const dispatch = useDispatch();
-  const profileStep = useSelector(
-    (state: RootState) => state.profile.currentStep,
-  ) as StepKey;
+  
 
- 
 
-  const allData = useSelector((state: RootState) => state.profile.formData);
 
   const profileSteps = {
     personalInformation: {
@@ -31,7 +24,6 @@ const ProfileCreationQuestion = () => {
         "Provide your personal details to help build a complete profile.",
       fields: PersonalInformationFields,
       submitText: "Continue",
-      initialValues: allData.personalInformation,
     },
 
     aboutMe: {
@@ -40,7 +32,6 @@ const ProfileCreationQuestion = () => {
         "Share a brief overview of your passion, experience, and what drives your creativity.",
       fields: AboutMeFields,
       submitText: "Continue",
-      initialValues: allData.aboutMe,
     },
 
     socialLinks: {
@@ -48,7 +39,6 @@ const ProfileCreationQuestion = () => {
       subtitle: "Connect your social media profiles",
       fields: socialLinksFields,
       submitText: "Continue",
-      initialValues: allData.socialLinks,
     },
 
     workExperience: {
@@ -56,40 +46,58 @@ const ProfileCreationQuestion = () => {
       submitText: "Submit",
       subtitle: "",
       fields: workExperienceFields,
-      initialValues: allData.workExperience,
-      // {
-      //   role: "",
-      //   employmentType: "",
-      //   organisation: "",
-      //   startDate: "",
-      //   throughDate: "",
-      //   stillInRole: false,
-      //   description: "",
-      // },
     },
   } as const;
 
-  type StepKey = keyof typeof profileSteps;
+  const getInitialValues = (
+    step: ProfileCreationStep,
+    savedData: Partial<ProfileFormValues> = {},
+  ) => {
+    const defaults: Record<ProfileCreationStep, Partial<ProfileFormValues>> = {
+      personalInformation: {
+        name: "",
+        location: "",
+        tailoringSkills: "",
+        yearsOfExperience: "",
+      },
+      aboutMe: {
+        businessName: "",
+        descriptionAboutMe: "",
+      },
+      socialLinks: {
+        tiktok: "",
+        instagram: "",
+        x: "",
+        facebook: "",
+      },
+      workExperience: {
+        role: "",
+        employmentType: "",
+        startDate: "",
+        throughDate: "",
+        organisation: "",
+        isStillInRole: false,
+        desription: "",
+      },
+    };
 
-  const currentStep = profileSteps[profileStep];
+    const stepDefaults = defaults[step] || {};
+    const savedForThisStep = savedData || {};
 
-  const handleSubmit = (values: any) => {
-    dispatch(
-      updateStepData({
-        step: profileStep,
-        data: values,
-      }),
-    );
+    return {
+      ...stepDefaults,
+      ...savedForThisStep,
+    } as Partial<ProfileFormValues>;
+  };
 
-    if (profileStep !== "workExperience") {
-      dispatch(nextStep());
-    } else {
-      dispatch(setIsAddingWorkExperience(true));
-      console.log("Complete Profile:", allData);
-      return;
-    }
+ 
+
+ 
+
+  
 
     console.log("Submitted values:", profileStep, values);
+
   };
 
   const validationSchema = generateYupSchema(currentStep.fields);
@@ -102,7 +110,7 @@ const ProfileCreationQuestion = () => {
     <>
       <ProfileCreationForm
         fields={currentStep.fields}
-        initialValues={currentStep?.initialValues}
+        initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
         submitText={currentStep?.submitText}

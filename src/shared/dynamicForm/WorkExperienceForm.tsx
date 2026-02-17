@@ -1,15 +1,21 @@
 import { validateYupSchema } from "formik";
 
 import DynamicForm, { type FieldConfig } from "./DynamicForm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { generateYupSchema } from "../../utils/YupSchema";
 import type { workExperience } from "../types";
-import { setIsAddingWorkExperience } from "../../store/profileSlice";
+import {
+  setIsAddingWorkExperience,
+  updateStepData,
+} from "../../store/profileSlice";
+import type { RootState } from "../../store";
 
 // {}: FormGeneratorProps<T>
 
 const WorkExperienceForm = () => {
   const dispatch = useDispatch();
+
+  const allData = useSelector((state: RootState) => state.profile.formData);
 
   const workExperienceFields: FieldConfig[] = [
     {
@@ -17,7 +23,7 @@ const WorkExperienceForm = () => {
       label: "Role",
       placeholder: "e.g Tailor",
       type: "text",
-      required: true
+      required: true,
     },
     {
       name: "employmentType",
@@ -89,9 +95,17 @@ const WorkExperienceForm = () => {
   const validationSchema = generateYupSchema(workExperienceFields);
 
   const handleSubmit = async (values: workExperience) => {
+    dispatch(
+      updateStepData({
+        step: "workExperience",
+        data: values,
+      }),
+    );
+
     console.log(values);
     
-    dispatch(setIsAddingWorkExperience(false));
+
+    // dispatch(setIsAddingWorkExperience(false));
   };
 
   return (
