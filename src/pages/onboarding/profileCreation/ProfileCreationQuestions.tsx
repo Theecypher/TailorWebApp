@@ -8,22 +8,7 @@ import {
   socialLinksFields,
   workExperienceFields,
 } from "./ProfileCreationField";
-import {
-  nextStep,
-  setIsAddingWorkExperience,
-  updateStepData,
-} from "../../../store/profileSlice";
-
 const ProfileCreationQuestion = () => {
-  const dispatch = useDispatch();
-  const profileStep = useSelector(
-    (state: RootState) => state.profile.currentStep,
-  ) as StepKey;
-
- 
-
-  const allData = useSelector((state: RootState) => state.profile.formData);
-
   const profileSteps = {
     personalInformation: {
       title: "Personal Information",
@@ -31,7 +16,6 @@ const ProfileCreationQuestion = () => {
         "Provide your personal details to help build a complete profile.",
       fields: PersonalInformationFields,
       submitText: "Continue",
-      initialValues: allData.personalInformation,
     },
 
     aboutMe: {
@@ -40,7 +24,6 @@ const ProfileCreationQuestion = () => {
         "Share a brief overview of your passion, experience, and what drives your creativity.",
       fields: AboutMeFields,
       submitText: "Continue",
-      initialValues: allData.aboutMe,
     },
 
     socialLinks: {
@@ -48,7 +31,6 @@ const ProfileCreationQuestion = () => {
       subtitle: "Connect your social media profiles",
       fields: socialLinksFields,
       submitText: "Continue",
-      initialValues: allData.socialLinks,
     },
 
     workExperience: {
@@ -56,61 +38,26 @@ const ProfileCreationQuestion = () => {
       submitText: "Submit",
       subtitle: "",
       fields: workExperienceFields,
-      initialValues: allData.workExperience,
-      // {
-      //   role: "",
-      //   employmentType: "",
-      //   organisation: "",
-      //   startDate: "",
-      //   throughDate: "",
-      //   stillInRole: false,
-      //   description: "",
-      // },
     },
   } as const;
 
-  type StepKey = keyof typeof profileSteps;
-
-  const currentStep = profileSteps[profileStep];
-
   const handleSubmit = (values: any) => {
-    dispatch(
-      updateStepData({
-        step: profileStep,
-        data: values,
-      }),
-    );
-
-    if (profileStep !== "workExperience") {
-      dispatch(nextStep());
-    } else {
-      dispatch(setIsAddingWorkExperience(true));
-      console.log("Complete Profile:", allData);
-      return;
-    }
-
-    console.log("Submitted values:", profileStep, values);
-  };
-
-  const validationSchema = generateYupSchema(currentStep.fields);
-
-  const handleClick = () => {
-    console.log("click");
+    console.log("Submitted values:", values);
   };
 
   return (
     <>
       <ProfileCreationForm
-        fields={currentStep.fields}
-        initialValues={currentStep?.initialValues}
-        validationSchema={validationSchema}
+        fields={}
+        initialValues={}
+        validationSchema={}
         onSubmit={handleSubmit}
-        submitText={currentStep?.submitText}
+        submitText={}
         formLayoutClassname="px-5 mb-[300px]"
         buttonClassName="text-white"
-        title={currentStep?.title}
-        handleAddClick={handleClick}
-        subTitle={currentStep?.subtitle}
+        // title={currentStep?.title}
+        // handleAddClick={handleClick}
+        // subTitle={currentStep?.subtitle}
       />
     </>
   );
