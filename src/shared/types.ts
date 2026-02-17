@@ -25,6 +25,7 @@ export interface InputProps {
   rows?: number;
   hintText?: boolean;
   logo?: string;
+  hasLogo?: boolean;
 }
 
 export type FieldConfig = {
@@ -61,5 +62,16 @@ export type FieldConfig = {
   disabled?: boolean;
   fullWidth?: boolean;
   logo?: string;
+  hasLogo?: boolean;
   onChange?: (value: any, formValues?: any) => void;
+};
+
+export type workExperience = {
+  role: string | null;
+  employmentType: "" | "Part-Time" | "Full-Time" | "Contract" | "Freelance";
+  organisation: string | null;
+  startDate: string | null;
+  throughDate: string | null;
+  isStillInRole: boolean;
+  desription: string | null;
 };

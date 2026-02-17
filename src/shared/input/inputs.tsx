@@ -20,6 +20,8 @@ const Input: React.FC<InputProps> = ({
   borderless = false,
   rows,
   buttomBorder = false,
+  logo,
+  hasLogo = false
 
   //   hintText = false,
 }) => {
@@ -54,8 +56,13 @@ const Input: React.FC<InputProps> = ({
       {label && (
         <label
           htmlFor={name}
-          className="block text-12 font-medium text-offBlack mb-1.5 relative"
+          className="flex items-center gap-2 text-12 font-medium text-offBlack mb-1.5 relative"
         >
+          {hasLogo && (
+            <div className="flex gap-2">
+              <img className="w-6 h-6" src={logo} alt="" />
+            </div>
+          )}
           {label}
           {required && (
             <span className="font-medium text-[13px] absolute text-dangerWarning">
@@ -97,17 +104,16 @@ const Input: React.FC<InputProps> = ({
             `.trim()}
         />
       ) : (
-   
-          <input
-            id={name}
-            type={inputType}
-            {...field}
-            placeholder={placeholder}
-            disabled={disabled}
-            autoComplete={autoComplete}
-            value={value !== undefined ? value : field.value}
-            maxLength={maxLength}
-            className={`
+        <input
+          id={name}
+          type={inputType}
+          {...field}
+          placeholder={placeholder}
+          disabled={disabled}
+          autoComplete={autoComplete}
+          value={value !== undefined ? value : field.value}
+          maxLength={maxLength}
+          className={`
               block w-full px-2 h-[40px] text-14 lg:h-12 rounded-12 ${borderless ? "" : ""}
                 ${buttomBorder ? "border-b border-b-borderButton shadow-none" : "border shadow-sm"}
                font-light
@@ -120,8 +126,7 @@ const Input: React.FC<InputProps> = ({
               }
               ${className}
             `.trim()}
-          />
-      
+        />
       )}
 
       {maxLength && showCharacterCount && !hasError && (
