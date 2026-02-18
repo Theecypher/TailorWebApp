@@ -10,7 +10,7 @@ const ProfileCreation = () => {
   };
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <LogoHeader />
 
       <div className="absolute top-[50%] translate-y-[-50%] lg:left-[50%] lg:translate-x-[-50%]">

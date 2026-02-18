@@ -40,6 +40,7 @@ export type FieldConfig = {
     | "checkbox"
     | "boolean"
     | "select"
+    | "box"
     // | 'multiselect'
     | "textarea"
     | "tel";

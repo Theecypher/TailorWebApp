@@ -15,7 +15,7 @@ import type { RootState } from "../../store";
 import WorkExperienceForm from "./WorkExperienceForm";
 
 interface FormGeneratorProps<T> {
-  fields: FieldConfig[];
+  fields?: FieldConfig[];
   title?: string;
   subTitle?: string;
   initialValues: T;
@@ -52,40 +52,11 @@ const ProfileCreationForm = <T extends Record<string, any>>({
   subTitle = "Provide your personal details to help build a complete profile.",
   formLayoutClassname,
   handleAddClick,
+  addIcon,
 }: FormGeneratorProps<T>) => {
-  const [isMobile] = IsMobile();
-  const [selectedTab, setSelectedType] = useState("");
-  const [activeTab, setActiveTab] = useState("personalInformation");
-  const dispatch = useDispatch();
-
   return (
-    <div className="lg:flex min-h-screen overflow-hidden">
-      {!isMobile && (
-        <div className="w-[20%] border-r flex justify-center py-6">
-          <div>
-            <div className="flex flex-col gap-5">
-              {ProfileCreationData.map((link) => {
-                // const isActive = profileStep === link.value;
-                return (
-                  <div
-                    key={link.value}
-                    // onClick={() => handleProfileStepClick(link.value)}
-                    className={`flex gap-2 items-center cursor-pointer  transition-all duration-200 p-3 text-center ${isActive ? "bg-primary_active rounded-10 font-bold text-white" : "text-black"} `}
-                  >
-                    <img className="" src={link.img} alt="" />
-                    <h2>{link.label}</h2>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* {profileStep === "workExperience" && isAdding ? (
-        <WorkExperienceForm />
-      ) : ( */}
-      <div className="flex flex-col gap-5 py-5 w-full relative flex-1 lg:w-[80%]">
+    <div className="w-full flex-1 overflow-hidden">
+      <div className="flex flex-col gap-5 py-5 w-full">
         <div className="flex flex-col gap-3 px-5">
           <h2 className="text-24 font-bold">{title}</h2>
 
@@ -100,11 +71,9 @@ const ProfileCreationForm = <T extends Record<string, any>>({
             onSubmit={onSubmit}
           >
             {({ values, isSubmitting, isValid }) => (
-              <Form
-                className={`grid grid-row-6 gap-4 [&>*:last-child]:row-span-2 lg:w-[60%] ${layoutClassname}`}
-              >
-                <div className={formLayoutClassname}>
-                  {fields.map((field) => (
+              <Form className={`flex flex-col gap-2 w-full ${layoutClassname}`}>
+                <div className={`w-[60%] px-5 ${formLayoutClassname}`}>
+                  {fields?.map((field) => (
                     <div
                       key={field.name}
                       className={
@@ -118,6 +87,14 @@ const ProfileCreationForm = <T extends Record<string, any>>({
                           options={field.options || []}
                           disabled={field.disabled}
                         />
+                      )}
+
+                      {field.type === "box" && (
+                        <div className="border-border border-t">
+                          <h1 className="mt-3">
+                            No previous experiences added
+                          </h1>
+                        </div>
                       )}
 
                       {field.type === "textarea" && (
@@ -155,28 +132,25 @@ const ProfileCreationForm = <T extends Record<string, any>>({
                   ))}
                 </div>
 
-                {handleAddClick && (
-                  <div className="justify-self-end w-10 h-10 fixed z-50 top-[90%] right-[22px] lg:hidden">
+                {addIcon && (
+                  <div className="justify-self-end w-10 h-10 fixed z-50 top-[70%] right-[5%] hidden lg:flex">
                     <img onClick={handleAddClick} src={img.addIcon} alt="" />
                   </div>
                 )}
 
                 <div
-                  className={`border-t px-10 border-border w-full py-4 left-0 absolute bottom-[-32%] lg:bottom-0`}
+                  className={`
+
+                border-t mt-auto fixed shadow-md bottom-0 left-0 border-border w-full py-4
+                `}
                 >
                   {!hideSubmit && (
                     <div
-                      className={`flex justify-center md:w-[20%] md:justify-self-end ${buttonWrapperClassName}`}
+                      className={`flex justify-center md:w-[20%] md:justify-self-end px-10 ${buttonWrapperClassName}`}
                     >
                       <ShareWorkButton
                         type="submit"
-                        // disabled={
-                        //   isSubmitting ||
-                        //   Object.values(values).every(
-                        //     (value) => value === "" || value == null,
-                        //   )
-                        // }
-                        disabled={isSubmitting || isValid}
+                        disabled={isSubmitting || !isValid}
                         loading={isSubmitting}
                         className={`hover:bg-hoverBtn px-6 py-3 rounded-14 transition w-full ${buttonClassName}`}
                       >
