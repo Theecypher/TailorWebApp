@@ -84,12 +84,13 @@ export const STEP_DEFAULTS: Record<ProfileStep, any> = {
   // },
 };
 
-export interface WorkExperienceProps {
+export type WorkExperienceProps = {
   id: string;
-  role: string;
-  startDate: string;
-  throughDate: string;
-  organisation: string;
+  role: string | null;
+  employmentType: "" | "Part-Time" | "Full-Time" | "Contract" | "Freelance";
+  organisation: string | null;
+  startDate: string | null;
+  throughDate: string | null;
   isStillInRole: boolean;
-  desription: string;
-}
+  desription: string | null;
+};

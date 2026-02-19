@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { WorkExperienceProps } from "../../types/Profile";
 
 export type ProfileCreationStep =
   | "personalInformation"
@@ -25,20 +26,11 @@ export interface SocialLinks {
   x?: string;
 }
 
-export interface WorkExperienceItem {
-  id: string; // unique ID for edits/removal
-  companyName: string;
-  role: string;
-  startDate: string;
-  endDate?: string;
-  description?: string;
-}
-
 export interface ProfileFormData {
   personalInformation?: PersonalInformation;
   aboutMe?: AboutMe;
   socialLinks?: SocialLinks;
-  workExperience: WorkExperienceItem[];
+  workExperience: WorkExperienceProps[];
 }
 
 export interface ProfileState {
@@ -63,11 +55,32 @@ const stepOrder: readonly ProfileCreationStep[] = [
 ] as const;
 
 const profileSlice = createSlice({
-  name: "profileSteps",
+  name: "profileCreation",
   initialState,
   reducers: {
+    setStep: (
+      state: ProfileState,
+      action: PayloadAction<ProfileCreationStep>,
+    ) => {
+      state.currentStep = action.payload;
+    },
+
+    nextStep: (state: ProfileState) => {
+      const currentIndex = stepOrder.indexOf(state.currentStep);
+      if (currentIndex < stepOrder.length - 1) {
+        state.currentStep = stepOrder[currentIndex + 1];
+      }
+    },
+
+    setIsAddingWorkExperience: (
+      state: ProfileState,
+      action: PayloadAction<boolean>,
+    ) => {
+      state.isAddingWorkExperience = action.payload;
+    },
+
     updateStepData: <T extends keyof Omit<ProfileFormData, "workExperience">>(
-      state,
+      state: ProfileState,
       action: PayloadAction<{ step: T; data: ProfileFormData[T] }>,
     ) => {
       const { step, data } = action.payload;
@@ -76,35 +89,34 @@ const profileSlice = createSlice({
         ...data,
       };
     },
-    addWorkExperience: (state, action: PayloadAction<WorkExperienceItem>) => {
+
+    addWorkExperience: (
+      state: ProfileState,
+      action: PayloadAction<WorkExperienceProps>,
+    ) => {
       state.formData.workExperience.push(action.payload);
     },
-    editWorkExperience: (state, action: PayloadAction<WorkExperienceItem>) => {
+
+    editWorkExperience: (
+      state: ProfileState,
+      action: PayloadAction<WorkExperienceProps>,
+    ) => {
       const index = state.formData.workExperience.findIndex(
         (item) => item.id === action.payload.id,
       );
-      if (index !== -1) {
-        state.formData.workExperience[index] = action.payload;
-      }
+      if (index !== -1) state.formData.workExperience[index] = action.payload;
     },
-    removeWorkExperience: (state, action: PayloadAction<string>) => {
+
+    removeWorkExperience: (
+      state: ProfileState,
+      action: PayloadAction<string>,
+    ) => {
       state.formData.workExperience = state.formData.workExperience.filter(
         (item) => item.id !== action.payload,
       );
     },
-    setStep: (state, action: PayloadAction<ProfileCreationStep>) => {
-      state.currentStep = action.payload;
-    },
 
-    nextStep: (state) => {
-      const currentIndex = stepOrder.indexOf(state.currentStep);
-      if (currentIndex < stepOrder.length - 1) {
-        state.currentStep = stepOrder[currentIndex + 1];
-      }
-    },
-    setIsAddingWorkExperience: (state, action: PayloadAction<boolean>) => {
-      state.isAddingWorkExperience = action.payload;
-    },
+    resetProfile: () => initialState,
   },
 });
 

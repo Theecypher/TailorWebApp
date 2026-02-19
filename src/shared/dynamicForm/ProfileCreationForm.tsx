@@ -9,7 +9,6 @@ import SingleSelect from "../input/SIngleSelect";
 import { ProfileCreationData } from "../../Data/ProfileCreationData";
 import IsMobile from "../../utils/lib/IsMobile";
 import { useDispatch, useSelector } from "react-redux";
-import { setStep } from "../../store/profileSlice";
 import { img } from "../../constant";
 import type { RootState } from "../../store";
 import WorkExperienceForm from "./WorkExperienceForm";

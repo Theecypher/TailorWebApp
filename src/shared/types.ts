@@ -66,13 +66,3 @@ export type FieldConfig = {
   hasLogo?: boolean;
   onChange?: (value: any, formValues?: any) => void;
 };
-
-export type workExperience = {
-  role: string | null;
-  employmentType: "" | "Part-Time" | "Full-Time" | "Contract" | "Freelance";
-  organisation: string | null;
-  startDate: string | null;
-  throughDate: string | null;
-  isStillInRole: boolean;
-  desription: string | null;
-};

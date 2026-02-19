@@ -1,22 +1,20 @@
-import { validateYupSchema } from "formik";
-
 import DynamicForm, { type FieldConfig } from "./DynamicForm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { generateYupSchema } from "../../utils/YupSchema";
-import type { workExperience } from "../types";
-import { setIsAddingWorkExperience } from "../../store/profileSlice";
-import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import type { WorkExperienceProps } from "../../types/Profile";
+import { useState } from "react";
+import { addWorkExperience } from "../../store/profileSlice/test";
+import type { RootState } from "../../store";
 
 // {}: FormGeneratorProps<T>
-
-
 
 const WorkExperienceForm = () => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<WorkExperienceProps>({
     id: "",
     role: "",
+    employmentType: "",
     startDate: "",
     throughDate: "",
     organisation: "",
@@ -89,7 +87,8 @@ const WorkExperienceForm = () => {
     },
   ];
 
-  const initialValues: workExperience = {
+  const initialValues: WorkExperienceProps = {
+    id: "",
     role: "",
     employmentType: "",
     startDate: "",
@@ -98,11 +97,20 @@ const WorkExperienceForm = () => {
     isStillInRole: false,
     desription: "",
   };
+  const workExperience: WorkExperienceProps[] = useSelector(
+  (state: RootState) => state.
+);
+
 
   const validationSchema = generateYupSchema(workExperienceFields);
 
-  const handleSubmit = async (values: workExperience) => {
-    dispatch(setIsAddingWorkExperience(false));
+  const handleSubmit = async (values: WorkExperienceProps) => {
+    setFormData({
+      ...values,
+      id: uuidv4(),
+    });
+    dispatch(addWorkExperience(formData));
+    setFormData(initialValues);
   };
 
   return (
