@@ -4,10 +4,9 @@ import ProfileCreationQuestion from "./ProfileCreationQuestions";
 const ProfileCreationWrapper = () => {
   // cos
   return (
-    <div className="w-full">
+    <div className="w-full overflow-hidden">
       <LogoHeader />
 
-{/* <div></div> */}
       <ProfileCreationQuestion />
     </div>
   );

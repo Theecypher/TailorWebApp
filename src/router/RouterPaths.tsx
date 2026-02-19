@@ -38,6 +38,10 @@ export const router = createBrowserRouter(
         }
       /> */}
 
+
+
+      {/* <Route path="/uppp" element={<ProfileCreationQuestion />}/> */}
+
       <Route path="/upload" element={<UploadProjectLayout />}>
         <Route index element={<UploadProject />} />
         <Route path="/upload/uploadProject" element={<UploadProjectPage />} />

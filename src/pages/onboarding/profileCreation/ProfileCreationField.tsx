@@ -95,18 +95,15 @@ export const socialLinksFields: FieldConfig[] = [
   },
 ];
 
-export interface WorkExperience {
-  role: string;
-  employmentType: "partTime" | "fullTime" | "contract" | "freelance";
-  organisation: string;
-  startdate: string;         
-  throughDate: string | null; 
-  stillInRole: boolean;
-  description: string;
-}
-
-
-
+// export interface WorkExperience {
+//   role: string;
+//   employmentType: "partTime" | "fullTime" | "contract" | "freelance";
+//   organisation: string;
+//   startdate: string;
+//   throughDate: string | null;
+//   stillInRole: boolean;
+//   description: string;
+// }
 
 export const workExperienceDataFields: FieldConfig[] = [
   {
@@ -171,7 +168,14 @@ export const workExperienceDataFields: FieldConfig[] = [
   },
 ];
 
-export type WorkExperienceFormData = WorkExperience;
+export const WorkExperienceFormData: FieldConfig[] = [
+  {
+    name: "experiences",
+    label: "Experiences",
+    placeholder: "",
+    type: "box",
+  },
+];
 
 export const workExperienceFields: FieldConfig[] = [
   {
