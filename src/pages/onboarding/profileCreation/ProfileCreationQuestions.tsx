@@ -7,12 +7,14 @@ import {
 } from "../../../types/Profile";
 import { generateYupSchema } from "../../../utils/YupSchema";
 import IsMobile from "../../../utils/lib/IsMobile";
+import WorkExperienceForm from "../../../shared/dynamicForm/WorkExperienceForm";
 
 const ProfileCreationQuestion = () => {
   const [isMobile] = IsMobile();
   const [currentStep, setCurrentStep] = useState<ProfileStep>(
     "personalInformation",
   );
+  const [showExperienceForm, setShowExperienceForm] = useState<boolean>(false);
 
   const [formData, setFormData] =
     useState<Record<ProfileStep, any>>(STEP_DEFAULTS);
@@ -37,15 +39,16 @@ const ProfileCreationQuestion = () => {
 
       setCurrentStep(steps[nextIndex]);
     } else {
-      console.log("Final Data:", {
-        ...formData,
-        [currentStep]: values,
-      });
+      // console.log("Final Data:", {
+      //   ...formData,
+      //   [currentStep]: values,
+      // });
+      setShowExperienceForm(true);
     }
   };
 
   const handleClick = () => {
-    console.log(true);
+    setShowExperienceForm(true);
   };
 
   const validationSchema = generateYupSchema(stepConfig.fields);
@@ -76,19 +79,23 @@ const ProfileCreationQuestion = () => {
         )}
 
         <div className="w-full lg:w-[80%]">
-          <ProfileCreationForm
-            fields={stepConfig.fields}
-            initialValues={formData[currentStep]}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-            submitText={stepConfig.submitText}
-            buttonClassName="text-white"
-            title={stepConfig?.title}
-            formLayoutClassname={stepConfig.layoutClassName}
-            handleAddClick={handleClick}
-            addIcon={stepConfig.addIcon}
-            subTitle={stepConfig?.subtitle}
-          />
+          {currentStep === "workExperience" && showExperienceForm ? (
+            <WorkExperienceForm />
+          ) : (
+            <ProfileCreationForm
+              fields={stepConfig.fields}
+              initialValues={formData[currentStep]}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+              submitText={stepConfig.submitText}
+              buttonClassName="text-white"
+              title={stepConfig?.title}
+              formLayoutClassname={stepConfig.layoutClassName}
+              handleAddClick={handleClick}
+              addIcon={stepConfig.addIcon}
+              subTitle={stepConfig?.subtitle}
+            />
+          )}
         </div>
       </div>
     </>

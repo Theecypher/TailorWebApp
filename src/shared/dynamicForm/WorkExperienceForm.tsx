@@ -5,11 +5,24 @@ import { useDispatch } from "react-redux";
 import { generateYupSchema } from "../../utils/YupSchema";
 import type { workExperience } from "../types";
 import { setIsAddingWorkExperience } from "../../store/profileSlice";
+import { useState } from "react";
+import type { WorkExperienceProps } from "../../types/Profile";
 
 // {}: FormGeneratorProps<T>
 
+
+
 const WorkExperienceForm = () => {
   const dispatch = useDispatch();
+  const [formData, setFormData] = useState<WorkExperienceProps>({
+    id: "",
+    role: "",
+    startDate: "",
+    throughDate: "",
+    organisation: "",
+    isStillInRole: false,
+    desription: "",
+  });
 
   const workExperienceFields: FieldConfig[] = [
     {
@@ -17,7 +30,7 @@ const WorkExperienceForm = () => {
       label: "Role",
       placeholder: "e.g Tailor",
       type: "text",
-      required: true
+      required: true,
     },
     {
       name: "employmentType",
@@ -89,8 +102,6 @@ const WorkExperienceForm = () => {
   const validationSchema = generateYupSchema(workExperienceFields);
 
   const handleSubmit = async (values: workExperience) => {
-    console.log(values);
-    
     dispatch(setIsAddingWorkExperience(false));
   };
 
@@ -111,6 +122,7 @@ const WorkExperienceForm = () => {
             cancelLink="Skip"
             buttonWrapperClassName="lg:w-[30%]"
             buttonClassName="text-white"
+            formLayoutClassname="grid grid-cols-2 gap-5 &>*:nth-child(n+3)]:col-span-2"
             topBorderClassName="flex gap-5 w-full lg:w-[70%] flex-row-reverse gap-10 items-center place-self-end pt-2"
           />
         </div>
