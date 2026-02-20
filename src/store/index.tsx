@@ -3,12 +3,13 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import projectsReducer from "./projectSlice";
 import sectionReducer from "./SectionStore/SectionSlice";
-import profileReducer from "./profileSlice";
+import ProileReducer from "./profileSlice"
+
 
 const rootReducer = combineReducers({
   section: sectionReducer,
   projects: projectsReducer,
-  profile: profileReducer
+  profile: ProileReducer
 });
 
 const persistConfig = {

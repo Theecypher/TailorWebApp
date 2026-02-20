@@ -1,117 +1,112 @@
-import { generateYupSchema } from "../../../utils/YupSchema";
+import { useState } from "react";
 import ProfileCreationForm from "../../../shared/dynamicForm/ProfileCreationForm";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../../store";
 import {
-  AboutMeFields,
-  PersonalInformationFields,
-  socialLinksFields,
-  workExperienceFields,
-} from "./ProfileCreationField";
-import {
-  nextStep,
-  setIsAddingWorkExperience,
-  updateStepData,
-} from "../../../store/profileSlice";
+  STEP_CONFIG,
+  STEP_DEFAULTS,
+  type ProfileStep,
+} from "../../../types/Profile";
+import { generateYupSchema } from "../../../utils/YupSchema";
+import IsMobile from "../../../utils/lib/IsMobile";
+import WorkExperienceForm from "../../../shared/dynamicForm/WorkExperienceForm";
+import { useDispatch } from "react-redux";
+import { updateStepData } from "../../../store/profileSlice";
 
 const ProfileCreationQuestion = () => {
+  const [isMobile] = IsMobile();
   const dispatch = useDispatch();
-  const profileStep = useSelector(
-    (state: RootState) => state.profile.currentStep,
-  ) as StepKey;
+  const [currentStep, setCurrentStep] = useState<ProfileStep>(
+    "personalInformation",
+  );
+  const [showExperienceForm, setShowExperienceForm] = useState<boolean>(false);
 
- 
+  const [formData, setFormData] =
+    useState<Record<ProfileStep, any>>(STEP_DEFAULTS);
 
-  const allData = useSelector((state: RootState) => state.profile.formData);
-
-  const profileSteps = {
-    personalInformation: {
-      title: "Personal Information",
-      subtitle:
-        "Provide your personal details to help build a complete profile.",
-      fields: PersonalInformationFields,
-      submitText: "Continue",
-      initialValues: allData.personalInformation,
-    },
-
-    aboutMe: {
-      title: "About Me",
-      subtitle:
-        "Share a brief overview of your passion, experience, and what drives your creativity.",
-      fields: AboutMeFields,
-      submitText: "Continue",
-      initialValues: allData.aboutMe,
-    },
-
-    socialLinks: {
-      title: "Social Links",
-      subtitle: "Connect your social media profiles",
-      fields: socialLinksFields,
-      submitText: "Continue",
-      initialValues: allData.socialLinks,
-    },
-
-    workExperience: {
-      title: "Previous Work Experience",
-      submitText: "Submit",
-      subtitle: "",
-      fields: workExperienceFields,
-      initialValues: allData.workExperience,
-      // {
-      //   role: "",
-      //   employmentType: "",
-      //   organisation: "",
-      //   startDate: "",
-      //   throughDate: "",
-      //   stillInRole: false,
-      //   description: "",
-      // },
-    },
-  } as const;
-
-  type StepKey = keyof typeof profileSteps;
-
-  const currentStep = profileSteps[profileStep];
+  const stepConfig = STEP_CONFIG[currentStep];
 
   const handleSubmit = (values: any) => {
+    const steps: ProfileStep[] = [
+      "personalInformation",
+      "aboutMe",
+      "socialLinks",
+      "workExperience",
+    ];
+
+    if (currentStep === "workExperience") {
+      setShowExperienceForm(true);
+      return;
+    }
+
+    // Update redux
     dispatch(
       updateStepData({
-        step: profileStep,
+        step: currentStep,
         data: values,
       }),
     );
 
-    if (profileStep !== "workExperience") {
-      dispatch(nextStep());
-    } else {
-      dispatch(setIsAddingWorkExperience(true));
-      console.log("Complete Profile:", allData);
-      return;
+    // Move to next step
+    const nextIndex = steps.indexOf(currentStep) + 1;
+
+    if (nextIndex < steps.length) {
+      setCurrentStep(steps[nextIndex]);
     }
-
-    console.log("Submitted values:", profileStep, values);
   };
-
-  const validationSchema = generateYupSchema(currentStep.fields);
 
   const handleClick = () => {
-    console.log("click");
+    setShowExperienceForm(true);
   };
+
+  const validationSchema = generateYupSchema(stepConfig.fields);
 
   return (
     <>
-      <ProfileCreationForm
-        fields={currentStep.fields}
-        initialValues={currentStep?.initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-        submitText={currentStep?.submitText}
-        formLayoutClassname="px-5 mb-[300px]"
-        buttonClassName="text-white"
-        title={currentStep?.title}
-        handleAddClick={handleClick}
-        subTitle={currentStep?.subtitle}
-      />
+      <div className="lg:flex">
+        {!isMobile && (
+          <div className="w-[20%] border-r flex justify-center py-6">
+            <div>
+              <div className="flex flex-col gap-5 h-full">
+                {Object.keys(STEP_CONFIG).map((stepkey) => {
+                  const step = stepkey as ProfileStep;
+                  const isActive = currentStep === step;
+                  return (
+                    <div
+                      key={step}
+                      onClick={() => setCurrentStep(step)}
+                      className={`cursor-pointer p-3 rounded-10 transition ${isActive ? "bg-primary_active font-bold text-white" : "text-black hover:bg-gray-100"}`}
+                    >
+                      {STEP_CONFIG[step].title}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="w-full lg:w-[80%]">
+          {currentStep === "workExperience" && showExperienceForm ? (
+            <WorkExperienceForm
+              showExperienceForm={showExperienceForm}
+              setShowExperienceForm={setShowExperienceForm}
+            />
+          ) : (
+            <ProfileCreationForm
+              fields={stepConfig.fields}
+              initialValues={formData[currentStep]}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+              submitText={stepConfig.submitText}
+              buttonClassName="text-white"
+              title={stepConfig?.title}
+              formLayoutClassname={stepConfig.layoutClassName}
+              handleAddClick={handleClick}
+              addIcon={stepConfig.addIcon}
+              subTitle={stepConfig?.subtitle}
+            />
+          )}
+        </div>
+      </div>
     </>
   );
 };
