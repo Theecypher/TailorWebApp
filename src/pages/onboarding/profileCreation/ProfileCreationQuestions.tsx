@@ -8,9 +8,12 @@ import {
 import { generateYupSchema } from "../../../utils/YupSchema";
 import IsMobile from "../../../utils/lib/IsMobile";
 import WorkExperienceForm from "../../../shared/dynamicForm/WorkExperienceForm";
+import { useDispatch } from "react-redux";
+import { updateStepData } from "../../../store/profileSlice";
 
 const ProfileCreationQuestion = () => {
   const [isMobile] = IsMobile();
+  const dispatch = useDispatch();
   const [currentStep, setCurrentStep] = useState<ProfileStep>(
     "personalInformation",
   );
@@ -22,28 +25,31 @@ const ProfileCreationQuestion = () => {
   const stepConfig = STEP_CONFIG[currentStep];
 
   const handleSubmit = (values: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [currentStep]: values,
-    }));
+    const steps: ProfileStep[] = [
+      "personalInformation",
+      "aboutMe",
+      "socialLinks",
+      "workExperience",
+    ];
 
-    if (currentStep != "workExperience") {
-      const steps: ProfileStep[] = [
-        "personalInformation",
-        "aboutMe",
-        "socialLinks",
-        "workExperience",
-      ];
-
-      const nextIndex = steps.indexOf(currentStep) + 1;
-
-      setCurrentStep(steps[nextIndex]);
-    } else {
-      // console.log("Final Data:", {
-      //   ...formData,
-      //   [currentStep]: values,
-      // });
+    if (currentStep === "workExperience") {
       setShowExperienceForm(true);
+      return;
+    }
+
+    // Update redux
+    dispatch(
+      updateStepData({
+        step: currentStep,
+        data: values,
+      }),
+    );
+
+    // Move to next step
+    const nextIndex = steps.indexOf(currentStep) + 1;
+
+    if (nextIndex < steps.length) {
+      setCurrentStep(steps[nextIndex]);
     }
   };
 
@@ -80,7 +86,10 @@ const ProfileCreationQuestion = () => {
 
         <div className="w-full lg:w-[80%]">
           {currentStep === "workExperience" && showExperienceForm ? (
-            <WorkExperienceForm />
+            <WorkExperienceForm
+              showExperienceForm={showExperienceForm}
+              setShowExperienceForm={setShowExperienceForm}
+            />
           ) : (
             <ProfileCreationForm
               fields={stepConfig.fields}

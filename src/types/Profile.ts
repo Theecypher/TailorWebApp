@@ -12,6 +12,11 @@ export type ProfileStep =
   | "aboutMe"
   | "socialLinks"
   | "workExperience";
+export type ProfileStepp =
+  | "personalInformation"
+  | "aboutMe"
+  | "socialLinks"
+  // | "workExperience";
 
 export const STEP_CONFIG: Record<
   ProfileStep,
@@ -91,6 +96,6 @@ export type WorkExperienceProps = {
   organisation: string | null;
   startDate: string | null;
   throughDate: string | null;
-  isStillInRole: boolean;
-  desription: string | null;
+  stillInRole: boolean;
+  description: string | null;
 };

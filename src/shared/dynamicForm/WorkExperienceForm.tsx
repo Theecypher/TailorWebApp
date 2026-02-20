@@ -3,13 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { generateYupSchema } from "../../utils/YupSchema";
 import { v4 as uuidv4 } from "uuid";
 import type { WorkExperienceProps } from "../../types/Profile";
-import { useState } from "react";
-import { addWorkExperience } from "../../store/profileSlice/test";
+import { useEffect, useState } from "react";
 import type { RootState } from "../../store";
+import { addWorkExperience } from "../../store/profileSlice";
+
+type WorkExperienceConfig = {
+  showExperienceForm: boolean;
+  setShowExperienceForm: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 // {}: FormGeneratorProps<T>
 
-const WorkExperienceForm = () => {
+const WorkExperienceForm = ({
+  setShowExperienceForm,
+}: WorkExperienceConfig) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<WorkExperienceProps>({
     id: "",
@@ -18,8 +25,8 @@ const WorkExperienceForm = () => {
     startDate: "",
     throughDate: "",
     organisation: "",
-    isStillInRole: false,
-    desription: "",
+    stillInRole: false,
+    description: "",
   });
 
   const workExperienceFields: FieldConfig[] = [
@@ -62,7 +69,7 @@ const WorkExperienceForm = () => {
       type: "text",
     },
     {
-      name: "startdate",
+      name: "startDate",
       label: "Start Date",
       placeholder: "",
       type: "date",
@@ -94,24 +101,43 @@ const WorkExperienceForm = () => {
     startDate: "",
     throughDate: "",
     organisation: "",
-    isStillInRole: false,
-    desription: "",
+    stillInRole: false,
+    description: "",
   };
   const workExperience: WorkExperienceProps[] = useSelector(
-  (state: RootState) => state.
-);
-
+    (state: RootState) => state.profile.formData.workExperience,
+  );
 
   const validationSchema = generateYupSchema(workExperienceFields);
 
-  const handleSubmit = async (values: WorkExperienceProps) => {
-    setFormData({
-      ...values,
-      id: uuidv4(),
-    });
-    dispatch(addWorkExperience(formData));
-    setFormData(initialValues);
+  const handleSubmit = (values: WorkExperienceProps) => {
+    if (!values.organisation) {
+      return;
+    }
+
+    const isDuplicate = workExperience.some(
+      (exp) =>
+        exp.organisation?.trim().toLowerCase() ===
+        values.organisation!.trim().toLowerCase(),
+    );
+
+    if (isDuplicate) {
+      alert("This organization already exists.");
+    }
+
+    dispatch(
+      addWorkExperience({
+        ...values,
+        id: uuidv4(),
+      }),
+    );
+
+    setShowExperienceForm(false);
   };
+
+  useEffect(() => {
+    console.log(workExperience);
+  }, [workExperience]);
 
   return (
     <div className="h-screen px-5 py-5 w-full">

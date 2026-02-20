@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { img } from "../../constant";
 import type { RootState } from "../../store";
 import WorkExperienceForm from "./WorkExperienceForm";
+import type { WorkExperienceProps } from "../../types/Profile";
 
 interface FormGeneratorProps<T> {
   fields?: FieldConfig[];
@@ -53,6 +54,10 @@ const ProfileCreationForm = <T extends Record<string, any>>({
   handleAddClick,
   addIcon,
 }: FormGeneratorProps<T>) => {
+  const workExperience: WorkExperienceProps[] = useSelector(
+    (state: RootState) => state.profile.formData.workExperience,
+  );
+
   return (
     <div className="w-full flex-1 overflow-hidden">
       <div className="flex flex-col gap-5 py-5 w-full">
@@ -90,9 +95,19 @@ const ProfileCreationForm = <T extends Record<string, any>>({
 
                       {field.type === "box" && (
                         <div className="border-border border-t">
-                          <h1 className="mt-3">
-                            No previous experiences added
-                          </h1>
+                          {workExperience.length === 0 ? (
+                            <h1 className="mt-3">
+                              No previous experiences added
+                            </h1>
+                          ) : (
+                            <div className="bg-border">
+                              {workExperience.map((item) => (
+                                <div className="">
+                                  <h1>{item.role}</h1>
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       )}
 
