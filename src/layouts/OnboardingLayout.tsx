@@ -54,10 +54,12 @@ const OnboardingLayout = ({
           className,
         )}
       >
-        <div className=" ">
-          <p>{title}</p>
+        <div className="flex flex-col gap-2 items-center  lg:w-full">
+          <p className="text-[28px] font-bold self-start md:justify-self-start">
+            {title}
+          </p>
 
-          <div>
+          <div className="">
             <div className="flex items-center gap-3">
               <div className="flex flex-col gap-4">
                 <ShareWorkButton className="flex border border-grey100 justify-between bg-white py-3 items-center text-black gap-3">

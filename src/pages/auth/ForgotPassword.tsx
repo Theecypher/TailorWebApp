@@ -3,10 +3,10 @@ import OnboardingLayout from "../../layouts/OnboardingLayout";
 import DynamicForm, {
   type FieldConfig,
 } from "../../shared/dynamicForm/DynamicForm";
-import type { Login } from "../../types/Auth";
-import { LoginValidationSchema } from "../../utils/YupSchema";
+import type { ForgotPassword, Login } from "../../types/Auth";
+import { generateYupSchema } from "../../utils/YupSchema";
 
-const Login = () => {
+const ForgotPassword = () => {
   const [role, setRole] = useState("client");
   let email = "";
 
@@ -24,44 +24,41 @@ const Login = () => {
       required: true,
       email: true,
     },
-    {
-      name: "password",
-      label: "Password",
-      type: "password",
-      required: true,
-      minLength: 6,
-    },
   ];
 
   const inintialValues = {
     email: "",
-    password: "",
   };
 
-  const handleSubmit = async (values: Login) => {
+  const validationSchema = generateYupSchema(fields);
+
+  const handleSubmit = async (values: ForgotPassword) => {
     console.log(values);
   };
 
   return (
-    <OnboardingLayout title="Welcome back">
-      <div className="w-full">
+    <div className="flex justify-center items-center min-h-screen flex-col gap-5 py-4 mt-auto w-full">
+      <div>
+        <div>
+          <h5 className="font-bold text-[28px]">Reset Password</h5>
+          <p>
+            Enter your registered email to receive an OTP to securely reset your
+            password.
+          </p>
+        </div>
         <DynamicForm
           fields={fields}
-          validationSchema={LoginValidationSchema}
+          validationSchema={validationSchema}
           initialValues={inintialValues}
           onSubmit={handleSubmit}
           layoutClassname="flex flex-col w-full"
           formLayoutClassname="w-full"
-          forgotPasswordLink="Forgotten password?"
           submitText="Log in"
           topBorderClassName="mt-2"
-          buttonClassName="text-white py-3 font-bold text-16"
-          bottomText="Don’t have an account?"
-          bottomLink="Create account"
         />
       </div>
-    </OnboardingLayout>
+    </div>
   );
 };
 
-export default Login;
+export default ForgotPassword;

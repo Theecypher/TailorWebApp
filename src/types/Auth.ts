@@ -3,3 +3,8 @@ export type Login = {
     password: string,
     workEmail?: string
 }
+
+export type ForgotPassword = {
+    email?: string,
+    
+}

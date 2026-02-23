@@ -92,7 +92,7 @@ const Signup = () => {
   };
 
   return (
-    <OnboardingLayout>
+    <OnboardingLayout title="Create an Account" >
       <div className="w-full">
         <DynamicForm
           fields={fields}
