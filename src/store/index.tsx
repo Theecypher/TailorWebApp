@@ -4,12 +4,14 @@ import storage from "redux-persist/lib/storage";
 import projectsReducer from "./projectSlice";
 import sectionReducer from "./SectionStore/SectionSlice";
 import ProileReducer from "./profileSlice"
+import AuthReducer from "./authSlice"
 
 
 const rootReducer = combineReducers({
   section: sectionReducer,
   projects: projectsReducer,
-  profile: ProileReducer
+  profile: ProileReducer,
+  auth: AuthReducer
 });
 
 const persistConfig = {

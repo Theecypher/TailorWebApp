@@ -5,6 +5,7 @@ interface ShareWorkButtonProps {
     type?: 'button' | 'submit' | 'reset';
     disabled?: boolean;
     loading?: boolean
+    icon?: string
 }
 
 const ShareWorkButton: React.FC<ShareWorkButtonProps> = ({
@@ -13,10 +14,11 @@ const ShareWorkButton: React.FC<ShareWorkButtonProps> = ({
     className,
     type = 'button',
     disabled = false,
-    loading = false
+    loading = false,
+    icon
 }) => {
     return ( 
-        <button type={type} onClick={onClick} disabled={disabled || loading} className={`bg-[#008080] rounded-100 py-2 text-12 px-8 ${className}`}>{children}</button>
+        <button type={type}  onClick={onClick} disabled={disabled || loading} className={`bg-[#008080] rounded-100 py-2 text-12 px-8 ${className}`}>{children}</button>
      );
 }
  

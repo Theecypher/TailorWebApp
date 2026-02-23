@@ -19,6 +19,9 @@ import UploadProjectLayout from "../components/viewport/UploadProjectLayout";
 
 const ProjectView = lazy(() => import("../pages/projectView"));
 
+const Login = lazy(() => import("../pages/auth/Signin"));
+const Signup = lazy(() => import("../pages/auth/Signup"));
+
 const ProfileCreation = lazy(
   () => import("../pages/onboarding/profileCreation"),
 );
@@ -38,8 +41,6 @@ export const router = createBrowserRouter(
         }
       /> */}
 
-
-
       {/* <Route path="/uppp" element={<ProfileCreationQuestion />}/> */}
 
       <Route path="/upload" element={<UploadProjectLayout />}>
@@ -53,7 +54,8 @@ export const router = createBrowserRouter(
       </Route> */}
 
       <Route path="/">
-        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         {/* <Route path="/reset-password" element={<ResetPassWord />} /> */}
         {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
         <Route path="/profile" element={<ProfileCreation />} />

@@ -6,13 +6,14 @@ import type { FieldConfig } from "../types";
 import Input from "../input/inputs";
 import type { ReactNode } from "react";
 import SingleSelect from "../input/SIngleSelect";
+import { Link } from "react-router";
 
 interface FormGeneratorProps<T> {
   fields: FieldConfig[];
   initialValues: T;
   validationSchema?: Yup.ObjectSchema<any>;
   onSubmit: (values: T) => void | Promise<void>;
-  forgotPasswordLink?: boolean;
+  forgotPasswordLink?: string;
   layoutClassname?: string;
   formLayoutClassname?: string;
   hideSubmit?: boolean;
@@ -26,6 +27,10 @@ interface FormGeneratorProps<T> {
   children?: ReactNode;
   buttonWrapperClassName?: string;
   topBorderClassName?: string;
+  toLink?: string;
+  bottomText?: string;
+  bottomLink?: string;
+  bottomLinkTo?: string;
 }
 
 const DynamicForm = <T extends Record<string, any>>({
@@ -33,9 +38,9 @@ const DynamicForm = <T extends Record<string, any>>({
   initialValues,
   validationSchema,
   onSubmit,
-  //   forgotPasswordLink = false,
+  forgotPasswordLink,
   hideSubmit = false,
-  cancelLink = "Cancel",
+  cancelLink,
   submitText,
   layoutClassname,
   buttonClassName,
@@ -44,6 +49,10 @@ const DynamicForm = <T extends Record<string, any>>({
   formLayoutClassname,
   noInputBorder,
   children,
+  bottomText,
+  bottomLink,
+  bottomLinkTo = "/",
+  toLink = "/",
 }: FormGeneratorProps<T>) => {
   return (
     <Formik<T>
@@ -124,7 +133,11 @@ const DynamicForm = <T extends Record<string, any>>({
             ))}
           </div>
 
-          {children}
+          {forgotPasswordLink && (
+            <Link className="text-primary text-16 self-end" to={toLink}>
+              {forgotPasswordLink}
+            </Link>
+          )}
 
           <div className={` ${topBorderClassName}`}>
             {!hideSubmit && (
@@ -151,6 +164,15 @@ const DynamicForm = <T extends Record<string, any>>({
               <p className="text-primary font-medium text-18">{cancelLink}</p>
             )}
           </div>
+
+          {bottomText && (
+            <div className="flex gap-2 items-center justify-center mt-5 text-16">
+              <p className="text-grey200 text-16">{bottomText}</p>
+              <Link className="text-primary" to={bottomLinkTo}>
+                {bottomLink}
+              </Link>
+            </div>
+          )}
         </Form>
       )}
     </Formik>
