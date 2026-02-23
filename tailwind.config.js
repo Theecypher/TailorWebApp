@@ -23,6 +23,7 @@ export default {
         primary200: "#9C9BAA",
         primary300: "#6B6A80",
         primary_active: "#004646",
+        inputBlue: "#1877F2"
       },
       borderRadius: {
         sm: "6px",
