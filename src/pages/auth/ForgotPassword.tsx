@@ -19,8 +19,9 @@ const ForgotPassword = () => {
   const fields: FieldConfig[] = [
     {
       name: "email",
-      label: email,
+      // label: email,
       type: "email",
+      placeholder: "example@gmail.com",
       required: true,
       email: true,
     },
@@ -37,15 +38,16 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen flex-col gap-5 py-4 mt-auto w-full">
+    <div className="flex justify-center px-5 md:px-10 lg:px-0 lg:items-center min-h-screen flex-col gap-5 py-4 mt-auto w-full">
       <div>
-        <div>
+        <div className="text-center my-5">
           <h5 className="font-bold text-[28px]">Reset Password</h5>
-          <p>
+          <p className="text-18">
             Enter your registered email to receive an OTP to securely reset your
             password.
           </p>
         </div>
+        <h1 className="font-semibold text-18">Email</h1>
         <DynamicForm
           fields={fields}
           validationSchema={validationSchema}
@@ -53,8 +55,9 @@ const ForgotPassword = () => {
           onSubmit={handleSubmit}
           layoutClassname="flex flex-col w-full"
           formLayoutClassname="w-full"
-          submitText="Log in"
+          submitText="Continue"
           topBorderClassName="mt-2"
+          buttonClassName="py-3"
         />
       </div>
     </div>
