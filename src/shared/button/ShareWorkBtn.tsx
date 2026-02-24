@@ -15,7 +15,6 @@ const ShareWorkButton: React.FC<ShareWorkButtonProps> = ({
   type = "button",
   disabled = false,
   loading = false,
-  icon,
 }) => {
   return (
     <button

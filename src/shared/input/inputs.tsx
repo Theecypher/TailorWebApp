@@ -21,7 +21,7 @@ const Input: React.FC<InputProps> = ({
   rows,
   buttomBorder = false,
   logo,
-  hasLogo = false
+  hasLogo = false,
 
   //   hintText = false,
 }) => {
