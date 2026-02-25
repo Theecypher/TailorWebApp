@@ -47,3 +47,5 @@ export const img = {
   clientWallpaper,
   designerWallpaper,
 };
+
+export const RE_DIGIT = new RegExp(/^\d+$/)
