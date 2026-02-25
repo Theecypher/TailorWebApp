@@ -1,15 +1,33 @@
-import { validateYupSchema } from "formik";
-
 import DynamicForm, { type FieldConfig } from "./DynamicForm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { generateYupSchema } from "../../utils/YupSchema";
-import type { workExperience } from "../types";
-import { setIsAddingWorkExperience } from "../../store/profileSlice";
+import { v4 as uuidv4 } from "uuid";
+import type { WorkExperienceProps } from "../../types/Profile";
+import { useEffect, useState } from "react";
+import type { RootState } from "../../store";
+import { addWorkExperience } from "../../store/profileSlice";
+
+type WorkExperienceConfig = {
+  showExperienceForm: boolean;
+  setShowExperienceForm: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 // {}: FormGeneratorProps<T>
 
-const WorkExperienceForm = () => {
+const WorkExperienceForm = ({
+  setShowExperienceForm,
+}: WorkExperienceConfig) => {
   const dispatch = useDispatch();
+  const [formData, setFormData] = useState<WorkExperienceProps>({
+    id: "",
+    role: "",
+    employmentType: "",
+    startDate: "",
+    throughDate: "",
+    organisation: "",
+    stillInRole: false,
+    description: "",
+  });
 
   const workExperienceFields: FieldConfig[] = [
     {
@@ -17,7 +35,7 @@ const WorkExperienceForm = () => {
       label: "Role",
       placeholder: "e.g Tailor",
       type: "text",
-      required: true
+      required: true,
     },
     {
       name: "employmentType",
@@ -51,7 +69,7 @@ const WorkExperienceForm = () => {
       type: "text",
     },
     {
-      name: "startdate",
+      name: "startDate",
       label: "Start Date",
       placeholder: "",
       type: "date",
@@ -76,23 +94,50 @@ const WorkExperienceForm = () => {
     },
   ];
 
-  const initialValues: workExperience = {
+  const initialValues: WorkExperienceProps = {
+    id: "",
     role: "",
     employmentType: "",
     startDate: "",
     throughDate: "",
     organisation: "",
-    isStillInRole: false,
-    desription: "",
+    stillInRole: false,
+    description: "",
   };
+  const workExperience: WorkExperienceProps[] = useSelector(
+    (state: RootState) => state.profile.formData.workExperience,
+  );
 
   const validationSchema = generateYupSchema(workExperienceFields);
 
-  const handleSubmit = async (values: workExperience) => {
-    console.log(values);
-    
-    dispatch(setIsAddingWorkExperience(false));
+  const handleSubmit = (values: WorkExperienceProps) => {
+    if (!values.organisation) {
+      return;
+    }
+
+    const isDuplicate = workExperience.some(
+      (exp) =>
+        exp.organisation?.trim().toLowerCase() ===
+        values.organisation!.trim().toLowerCase(),
+    );
+
+    if (isDuplicate) {
+      alert("This organization already exists.");
+    }
+
+    dispatch(
+      addWorkExperience({
+        ...values,
+        id: uuidv4(),
+      }),
+    );
+
+    setShowExperienceForm(false);
   };
+
+  useEffect(() => {
+    console.log(workExperience);
+  }, [workExperience]);
 
   return (
     <div className="h-screen px-5 py-5 w-full">
@@ -111,6 +156,7 @@ const WorkExperienceForm = () => {
             cancelLink="Skip"
             buttonWrapperClassName="lg:w-[30%]"
             buttonClassName="text-white"
+            formLayoutClassname="grid grid-cols-2 gap-5 &>*:nth-child(n+3)]:col-span-2"
             topBorderClassName="flex gap-5 w-full lg:w-[70%] flex-row-reverse gap-10 items-center place-self-end pt-2"
           />
         </div>

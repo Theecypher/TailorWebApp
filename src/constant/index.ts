@@ -18,6 +18,8 @@ import tailora from "../assets/png/tailora.png";
 import userlogo from "../assets/svg/User.svg";
 import award from "../assets/svg/fi_award.svg";
 import globe from "../assets/svg/fi_globe.svg";
+import clientWallpaper from "../assets/png/ClientWallpaper.png";
+import designerWallpaper from "../assets/png/DesignerWallpaper.png";
 import help_circle from "../assets/svg/fi_help-circle.svg";
 
 export const img = {
@@ -42,5 +44,8 @@ export const img = {
   award,
   globe,
   help_circle,
+  clientWallpaper,
+  designerWallpaper,
 };
 
+export const RE_DIGIT = new RegExp(/^\d+$/)
