@@ -21,7 +21,8 @@ const ProjectView = lazy(() => import("../pages/projectView"));
 
 const Login = lazy(() => import("../pages/auth/Signin"));
 const Signup = lazy(() => import("../pages/auth/Signup"));
-const ForgotPassword= lazy(() => import("../pages/auth/ForgotPassword"));
+const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
+const ResetPassword = lazy(() => import("../pages/auth/ResetPassword"));
 
 const ProfileCreation = lazy(
   () => import("../pages/onboarding/profileCreation"),
@@ -58,8 +59,7 @@ export const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
-        {/* <Route path="/reset-password" element={<ResetPassWord />} /> */}
-        {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profile" element={<ProfileCreation />} />
         <Route path="/profile-creation" element={<ProfileCreationQuestion />} />
       </Route>
