@@ -1,14 +1,25 @@
 import React, { useMemo } from "react";
 import { RE_DIGIT } from "../../constant";
+import { Link } from "react-router";
 // import './OtpInput.css';
 
 export type Props = {
   value: string;
   valueLength: number;
   onChange: (value: string) => void;
+  bottomText: string;
+  bottomLinkTo: string;
+  bottomLink: string;
 };
 
-export default function OtpInput({ value, valueLength, onChange }: Props) {
+export default function OtpInput({
+  value,
+  valueLength,
+  onChange,
+  bottomLink,
+  bottomText,
+  bottomLinkTo,
+}: Props) {
   const valueItems = useMemo(() => {
     const valueArray = value.split("");
     const items: Array<string> = [];
@@ -81,6 +92,8 @@ export default function OtpInput({ value, valueLength, onChange }: Props) {
 
       target.blur();
     }
+
+    console.log(onChange);
   };
   const inputOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { key } = e;
@@ -124,22 +137,30 @@ export default function OtpInput({ value, valueLength, onChange }: Props) {
   };
 
   return (
-    <div className="flex w-full max-w-[360px] gap-x-[10px]">
-      {valueItems.map((digit, idx) => (
-        <input
-          key={idx}
-          type="text"
-          inputMode="numeric"
-          autoComplete="one-time-code"
-          pattern="\d{1}"
-          maxLength={valueLength}
-          className="w-full h-[60px] border border-[#ccc] rounded-sm text-center text-[32px] font-bold leading-none"
-          value={digit}
-          onChange={(e) => inputOnChange(e, idx)}
-          onKeyDown={inputOnKeyDown}
-          onFocus={inputOnFocus}
-        />
-      ))}
+    <div className="flex flex-col items-center">
+      <div className="flex  w-full max-w-[300px] md:max-w-[360px] gap-x-[10px]">
+        {valueItems.map((digit, idx) => (
+          <input
+            key={idx}
+            type="text"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            pattern="\d{1}"
+            maxLength={valueLength}
+            className="w-full h-[40px] md:h-[60px] border border-[#ccc] rounded-lg text-center text-[32px] font-bold leading-none"
+            value={digit}
+            onChange={(e) => inputOnChange(e, idx)}
+            onKeyDown={inputOnKeyDown}
+            onFocus={inputOnFocus}
+          />
+        ))}
+      </div>
+      <div className="flex gap-2 items-center justify-center mt-5 text-16">
+        <p className="text-grey200 text-16">{bottomText}</p>
+        <Link className="text-primary" to={bottomLinkTo}>
+          {bottomLink}
+        </Link>
+      </div>
     </div>
   );
 }
