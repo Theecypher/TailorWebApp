@@ -21,6 +21,8 @@ import globe from "../assets/svg/fi_globe.svg";
 import clientWallpaper from "../assets/png/ClientWallpaper.png";
 import designerWallpaper from "../assets/png/DesignerWallpaper.png";
 import help_circle from "../assets/svg/fi_help-circle.svg";
+import hammenu from "../assets/svg/fi_menu.svg";
+import Greentailora from "../assets/png/Component 1.png";
 
 export const img = {
   arrowdown,
@@ -46,6 +48,8 @@ export const img = {
   help_circle,
   clientWallpaper,
   designerWallpaper,
+  Greentailora,
+  hammenu,
 };
 
-export const RE_DIGIT = new RegExp(/^\d+$/)
+export const RE_DIGIT = new RegExp(/^\d+$/);
