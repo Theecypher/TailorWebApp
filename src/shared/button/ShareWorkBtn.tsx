@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 interface ShareWorkButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
@@ -21,7 +23,11 @@ const ShareWorkButton: React.FC<ShareWorkButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
-      className={`bg-[#008080] rounded-100 py-2 text-12 text-white font-semibold px-8 ${className}`}
+      // className={`bg-[#008080] rounded-100 py-4 text-12 text-white font-semibold px-8 ${className}`}
+      className={clsx(
+        "bg-[#008080] rounded-100 py-4 text-12 font-semibold px-8",
+        className,
+      )}
     >
       {children}
     </button>

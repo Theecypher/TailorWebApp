@@ -23,7 +23,12 @@ export default {
         primary200: "#9C9BAA",
         primary300: "#6B6A80",
         primary_active: "#004646",
-        inputBlue: "#1877F2"
+        inputBlue: "#1877F2",
+        primarygreen200: "#E6F2F2",
+        primarygreen100: "#B0D8D8",
+        primarygreen600: "#007474",
+        primarygreen800: "#004646",
+        primarygreen50: "#F9FBFB",
       },
       borderRadius: {
         sm: "6px",
@@ -53,6 +58,9 @@ export default {
         24: "24px",
         52: "52px",
         sm: "14px",
+      },
+      width: {
+        100: "100px",
       },
     },
   },
