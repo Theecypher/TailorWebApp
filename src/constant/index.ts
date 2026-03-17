@@ -23,6 +23,15 @@ import designerWallpaper from "../assets/png/DesignerWallpaper.png";
 import help_circle from "../assets/svg/fi_help-circle.svg";
 import hammenu from "../assets/svg/fi_menu.svg";
 import Greentailora from "../assets/png/Component 1.png";
+import heroImg from "../assets/png/heroImg.png";
+import heroImg1 from "../assets/png/heroImg2.png";
+import heroImg2 from "../assets/png/heroImg3.png";
+import aboutGridImg from "../assets/png/aboutImg1.png";
+import aboutGridImg1 from "../assets/png/aboutImg2.png";
+import aboutGridImg2 from "../assets/png/aboutImg3.png";
+import presentYourWork from "../assets/png/presentyourworkimg.png";
+import discoverClient from "../assets/png/discoverclientsImg.png";
+import discoverClientMobile from "../assets/png/discoverclientImage.png";
 
 export const img = {
   arrowdown,
@@ -50,6 +59,15 @@ export const img = {
   designerWallpaper,
   Greentailora,
   hammenu,
+  heroImg,
+  heroImg1,
+  heroImg2,
+  aboutGridImg,
+  aboutGridImg1,
+  aboutGridImg2,
+  presentYourWork,
+  discoverClient,
+  discoverClientMobile
 };
 
 export const RE_DIGIT = new RegExp(/^\d+$/);

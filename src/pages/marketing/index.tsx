@@ -1,10 +1,14 @@
+import About from "../../components/about";
 import Header from "../../components/header/LandingPageHeader";
+import HowItWorks from "../../components/howitworks";
 import Navbar from "../../components/menubar";
 
 const LandingPage = () => {
   return (
-    <main>
+    <main className="">
       <Header />
+      <About />
+      <HowItWorks />
     </main>
   );
 };

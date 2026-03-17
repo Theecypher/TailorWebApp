@@ -3,7 +3,7 @@ import Logo from "../logo";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between items-center ">
+    <div className="flex justify-between items-center p-5 ">
       <Logo />
 
       <img className="w-5 h-5" src={img.hammenu} alt="" />
