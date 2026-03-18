@@ -6,8 +6,9 @@ const PresentYourWork = () => {
     <section className="bg-primarygreen200">
       <div className="flex flex-col lg:flex-row lg:items-center gap-10 py-14">
         <div className="flex flex-col text-left gap-3 lg:text-left lg:w-1/2 px-5 md:px-10 lg:gap-7">
-          <p className="text-primarygreen600 text-left  font-bold leading-[120%] text-20 lg:text-[52px] lg:tracking-[-2%] xl:w-[87%]">
-            Present your work with ease on Tailora
+          <p className="text-primarygreen600 text-left  font-bold leading-[120%] text-20 lg:text-[52px] lg:tracking-[-2%]">
+            Present your work  <span className="lg:block">with ease on</span>{" "}
+            <span className="lg:block">Tailora</span>
           </p>
           <p className="text-12 leading-[140%] text-grey500 lg:leading-[130%] lg:text-20">
             Showcase your work with Tailora. Track performance with built-in
@@ -16,8 +17,8 @@ const PresentYourWork = () => {
             opportunities.
           </p>
 
-          <div className="hidden lg:flex w-[60%]">
-            <ShareWorkButton className="w-full">Post your Work</ShareWorkButton>
+          <div className="hidden lg:flex w-[40%]">
+            <ShareWorkButton className="w-full text-white">Post your Work</ShareWorkButton>
           </div>
         </div>
 
@@ -26,9 +27,7 @@ const PresentYourWork = () => {
         </div>
 
         <div className="self-center lg:hidden w-[80%] mx-auto">
-          <ShareWorkButton className="w-full">
-            Post your Work
-          </ShareWorkButton>
+          <ShareWorkButton className="w-full text-white">Post your Work</ShareWorkButton>
         </div>
       </div>
     </section>

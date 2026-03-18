@@ -1,3 +1,4 @@
+import BuildConnections from "./BuildConnections";
 import DiscoverClients from "./DiscoverClients";
 import PresentYourWork from "./PresentYourWork";
 
@@ -7,6 +8,7 @@ const HowItWorks = () => {
       <div>
         <PresentYourWork />
         <DiscoverClients />
+        <BuildConnections />
       </div>
     </section>
   );
