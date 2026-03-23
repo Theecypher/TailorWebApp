@@ -3,11 +3,12 @@ import AboutCard from "./AboutCard";
 
 const About = () => {
   return (
-    <section className="flex flex-col mt-10 px-5 lg:px-[60px] py-10">
+    <section className="flex flex-col mt-16 px-5 lg:px-[60px] py-10 lg:mt-20">
       <div className="flex flex-col gap-5">
         <div className="my-5">
-          <p className="text-primary text-center mx-auto text-3xl font-bold leading-[120%] tracking-[-4%] lg:text-[56px] md:w-[50%]">
-            A New Home For Tailors Around The World
+          <p className="text-primary text-center mx-auto text-3xl font-bold leading-[120%] tracking-[-4%] lg:text-[56px]">
+            A New Home For Tailors{" "}
+            <span className="lg:block">Around The World</span>
           </p>
         </div>
 

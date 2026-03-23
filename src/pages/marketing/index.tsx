@@ -1,7 +1,8 @@
 import About from "../../components/about";
 import Header from "../../components/header/LandingPageHeader";
 import HowItWorks from "../../components/howitworks";
-import Navbar from "../../components/menubar";
+import "../../App.css"
+
 
 const LandingPage = () => {
   return (

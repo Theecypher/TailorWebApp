@@ -1,0 +1,12 @@
+.gradient {
+  /* background-image: radial-gradient(
+    circle,
+    #b0d8d8 40%,
+    #8ac5c5 40%,
+    #6b6a80 20%
+  ); */
+  width: 100px;
+  height: 100px;
+  background-image: radial-gradient(#b0d8d8, #8ac5c5, #54AAAA);
+
+}

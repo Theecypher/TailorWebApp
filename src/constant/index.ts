@@ -32,6 +32,8 @@ import aboutGridImg2 from "../assets/png/aboutImg3.png";
 import presentYourWork from "../assets/png/presentyourworkimg.png";
 import discoverClient from "../assets/png/discoverclientsImg.png";
 import discoverClientMobile from "../assets/png/discoverclientImage.png";
+import discoverClientLg from "../assets/png/discoverclientLg.png";
+import buildConnnectionImg from "../assets/png/buildconnnectionImg.png";
 
 export const img = {
   arrowdown,
@@ -67,7 +69,9 @@ export const img = {
   aboutGridImg2,
   presentYourWork,
   discoverClient,
-  discoverClientMobile
+  discoverClientMobile,
+  discoverClientLg,
+  buildConnnectionImg,
 };
 
 export const RE_DIGIT = new RegExp(/^\d+$/);
